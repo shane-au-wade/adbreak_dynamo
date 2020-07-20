@@ -30,6 +30,15 @@ document.addEventListener('readystatechange', (event) => {
                         buttons[i].click()
                     }
                 }
+
+                setTimeout(() => {
+                    if(checkBoxs[6].disabled) {
+                        //this is not a 10 minute vid
+                        window.close()
+                    }
+                },1000)
+                
+
             }, 5000)
            
         }, 30000)
