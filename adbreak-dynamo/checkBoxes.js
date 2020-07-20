@@ -44,7 +44,7 @@ document.addEventListener('readystatechange', (event) => {
 
             }, 3000)
            
-        }, 5000)
+        }, 30000)
     }
 });
 
