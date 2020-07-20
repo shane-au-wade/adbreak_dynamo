@@ -3,6 +3,10 @@
  */
 console.log('check boxes script loaded')
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 document.addEventListener('readystatechange', (event) => {
     //console.log(`readystate: ${document.readyState}\n`);
 
@@ -10,18 +14,27 @@ document.addEventListener('readystatechange', (event) => {
     {
         setTimeout(async () => {
             console.log('checking boxes now')
-            let checkBoxs = await document.getElementsByTagName("ytcp-checkbox-lit")
-            //console.log('checkboxes: ', checkBoxs)
+
+            // click the check boxes 3 times in total
+            for(let loop = 0; loop < 3; ++loop)
+            {
+                console.log('updating checkboxes: ', loop)
+                let checkBoxs = await document.getElementsByTagName("ytcp-checkbox-lit")
+                //console.log('checkboxes: ', checkBoxs)
    
-            for(let i = 0; i < checkBoxs.length; ++i){
-                //console.log('looping')
-                // console.log(checkBoxs[i])
-                //console.log(checkBoxs[i].getAttribute("aria-checked"))
-                if(checkBoxs[i].getAttribute("aria-checked") == 'false') { 
-                        console.log('box clicked!')
-                        await checkBoxs[i].click()
+                for(let i = 0; i < checkBoxs.length; ++i){
+                    //console.log('looping')
+                    // console.log(checkBoxs[i])
+                    //console.log(checkBoxs[i].getAttribute("aria-checked"))
+                    if(checkBoxs[i].getAttribute("aria-checked") == 'false') { 
+                            console.log('box clicked!')
+                            await checkBoxs[i].click()
+                    }
                 }
+
+                await sleep(5000)
             }
+            
 
             setTimeout( async() => {
                 let buttons = document.getElementsByTagName("ytcp-button")
@@ -44,7 +57,7 @@ document.addEventListener('readystatechange', (event) => {
 
             }, 3000)
            
-        }, 60000)
+        }, 40000)
     }
 });
 
