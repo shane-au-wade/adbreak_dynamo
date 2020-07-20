@@ -31,17 +31,20 @@ document.addEventListener('readystatechange', (event) => {
                     }
                 }
 
-                setTimeout(() => {
-                    if(checkBoxs[6].disabled) {
+                setTimeout(async () => {
+                    let checkBoxs = await document.getElementsByTagName("ytcp-checkbox-lit")
+                    console.log('check box if interest:',checkBoxs )
+                    console.log(checkBoxs[6].getAttribute("aria-disabled"))
+                    if(checkBoxs[6].getAttribute("aria-disabled") == 'true') {
                         //this is not a 10 minute vid
-                        window.close()
+                        open(location, '_self').close();
                     }
                 },1000)
                 
 
-            }, 5000)
+            }, 3000)
            
-        }, 30000)
+        }, 5000)
     }
 });
 

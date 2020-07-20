@@ -36,16 +36,29 @@ console.log('row update script loaded')
 //     }
 // }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const openTabs = () => {
     console.log('opening tabs')
     let elems = document.getElementsByClassName("style-scope ytcp-video-list-cell-video hover-item")
             
-    setTimeout( () => {
+    setTimeout( async () => {
+        let openCounter = 0
         for(let i = 0; i < elems.length; ++i){
                         if(elems[i].href) {
                             if(elems[i].href.indexOf('monetization') >= 0){
                             console.log(elems[i].href)
+                            openCounter++
                             window.open(elems[i].href, '_blank')
+                            }
+                            
+                            if(openCounter === 5)
+                            {
+                                //console.log('sleeping')
+                                openCounter = 0
+                               await sleep(10000)
                             }
                         }
                     }
