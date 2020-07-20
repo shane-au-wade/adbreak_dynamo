@@ -39,12 +39,12 @@ document.addEventListener('readystatechange', (event) => {
                         //this is not a 10 minute vid
                         open(location, '_self').close();
                     }
-                },1000)
+                },3000)
                 
 
             }, 3000)
            
-        }, 30000)
+        }, 60000)
     }
 });
 
