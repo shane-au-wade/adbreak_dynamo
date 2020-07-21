@@ -69,12 +69,17 @@ const createTimes = async (timeInterval) => {
                 } else if(number >= 10 && number < 60) { 
                     finalStr = finalStr + number + ":00"; 
                     resolve(finalStr); 
-                } else if(number > 60){ 
+                } else if(number >= 60) { 
                     let hours = number/60;
-                    hours = Math.floor(hours)
-                    number -= hours*60
-                    finalStr = finalStr + hours + ":" + number + ":00"
-                    resolve(finalStr)
+                    hours = Math.floor(hours);
+                    number -= hours*60;
+                        if(number< 10)
+                        {
+                            finalStr = finalStr + hours + ":0" + number + ":00";
+                        } else {
+                            finalStr = finalStr + hours + ":" + number + ":00";
+                        }
+                    resolve(finalStr);
                 } 
             }); 
         }; 
