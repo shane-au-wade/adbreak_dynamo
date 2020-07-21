@@ -54,11 +54,11 @@ const openTabs = () => {
                             window.open(elems[i].href, '_blank')
                             }
                             
-                            if(openCounter === 5)
+                            if(openCounter === 1)
                             {
                                 //console.log('sleeping')
                                 openCounter = 0
-                               await sleep(10000)
+                               await sleep(3000)
                             }
                         }
                     }
@@ -70,7 +70,7 @@ document.addEventListener('readystatechange', (event) => {
     //console.log(`readystate: ${document.readyState}\n`);
 
     if(document.readyState === 'complete')
-    {
+    {   
             setTimeout(async () => {
             let main = document.getElementById('main')
             main.scrollTo(0, main.scrollHeight)

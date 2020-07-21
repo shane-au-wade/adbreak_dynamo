@@ -75,7 +75,7 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
         console.log('checking boxes now')
 
         // click the check boxes 3 times in total
-        for(let loop = 0; loop < 3; ++loop)
+        for(let loop = 0; loop < 5; ++loop)
         {
             console.log('updating checkboxes: ', loop)
             let checkBoxs = await document.getElementsByTagName("ytcp-checkbox-lit")
@@ -125,7 +125,7 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
                     // button.innerText = 'create adbreaks'
                     // button.addEventListener('click', () => {createAdbreaks(4)})
                 }
-            },5000)
+            },3000)
             
 
         }, saveTime)
@@ -159,7 +159,7 @@ document.addEventListener('readystatechange', (event) => {
             observer.observe(targetNode, observerConfig)
         }, 1000)
        
-        checkBoxesTimed(55000, 3000, 3000)
+        //checkBoxesTimed(55000, 3000, 3000)
     }
 });
 
