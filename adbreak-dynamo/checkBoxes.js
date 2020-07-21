@@ -7,6 +7,68 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const openAndClearAdbreaks = async () => {
+    
+    for(let loop = 0; loop < 3; ++loop) {
+        let adbreakRows = await document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
+        for(let i = 0; i < adbreakRows.length; ++i) {
+                let adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
+                if(adbreakRows[i])
+                {
+                     adbreakRows[i].childNodes[3].click()
+                }  
+            }
+    }
+    
+}
+
+const genFormattedString = async (number) => {
+    return new Promise ((resolve, reject) => {
+        let finalStr = ""
+        if(number >= 10) {
+            finalStr = finalStr + number + ':00'
+            resolve(finalStr)
+        }
+        else {
+            finalStr = finalStr + '0' + number + ':00'
+            resolve(finalStr)
+        }
+    })
+
+}
+
+/**
+ * 
+ * @param {time interval in minutes} timeInterval 
+ */
+// adbreakRows[0].childNodes[5].childNodes[3].childNodes[0].childNodes[0].isFocused = true
+const createAdbreaks = async (timeInterval) => {
+    let timeStamp = await document.querySelector('div.label.style-scope.ytcp-thumbnail').innerText
+    let adBreaksButton = await document.querySelector('#add-ad-break')
+    let timeArr = timeStamp.split(':')
+    let vidMinutes = parseInt(timeArr[0])
+    vidMinutes = vidMinutes/timeInterval // lets say 5 minutes
+    let interval = Math.floor(vidMinutes)
+    for(let i=0; i < interval; ++i) {
+        adBreaksButton.click()
+        await sleep(100)
+    }
+    // await sleep(1000)
+    // for(let i=0; i < interval; ++i) {
+    //     //focus, update value, blur
+    //     // let adbreakRows = await document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
+    //     let inputs = await document.querySelectorAll("ytve-formatted-input")
+    //     await sleep(1000)
+    //     //console.log(inputs)
+    //     //inputs[0].onFocus()
+    //     let val = (i + 1)*timeInterval
+    //     inputs[i].childNodes[1].value = await genFormattedString(val)
+    //     //inputs[0].onblur()
+    //     // await sleep(1000)
+    // }
+
+}
+
 const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
     console.log('timer start: ', initTime)
     setTimeout(async () => {
@@ -50,6 +112,18 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
                 if(checkBoxs[6].getAttribute("aria-disabled") == 'true') {
                     //this is not a 10 minute vid
                     open(location, '_self').close();
+                } else {
+                    // this is a 10 minute video and we should do ad breaks
+                    console.log('running manual adbreak code')
+                    await document.querySelector('#place-manually-button').click()
+                    await sleep(2000)
+                    await openAndClearAdbreaks()
+                    // await sleep(1000)
+                    await createAdbreaks(4) // 4 minute time interval
+                    // let title = await document.querySelector('#dialog-title')
+                    // let button = title.appendChild(document.createElement('button'))
+                    // button.innerText = 'create adbreaks'
+                    // button.addEventListener('click', () => {createAdbreaks(4)})
                 }
             },5000)
             
