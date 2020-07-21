@@ -93,7 +93,7 @@ const createTimes = async (timeInterval) => {
 
             setTimeout( () => {
                 open(location, '_self').close();
-            }, 2000);
+            }, 3000);
 
         }, 2000);
        
