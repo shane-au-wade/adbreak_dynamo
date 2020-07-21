@@ -119,7 +119,7 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
                     await sleep(2000)
                     await openAndClearAdbreaks()
                     // await sleep(1000)
-                    await createAdbreaks(4) // 4 minute time interval
+                    //await createAdbreaks(4) // 4 minute time interval
                     // let title = await document.querySelector('#dialog-title')
                     // let button = title.appendChild(document.createElement('button'))
                     // button.innerText = 'create adbreaks'
