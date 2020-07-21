@@ -159,7 +159,7 @@ document.addEventListener('readystatechange', (event) => {
             observer.observe(targetNode, observerConfig)
         }, 1000)
        
-        checkBoxesTimed(40000, 3000, 3000)
+        checkBoxesTimed(55000, 3000, 3000)
     }
 });
 
