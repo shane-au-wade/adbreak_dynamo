@@ -7,13 +7,18 @@
         style="background-color: rgba(255, 0, 0, 0.6); color: #ffffff; padding: 5px; border-radius: 10px;"
         >
         Run Adbreak Auto</button> -->
-        <h3>Highlight Code</h3>
+        <h3>1. Highlight Code</h3>
         <input id = 'highlight_code' type='text' value='let videoRows = document.getElementsByTagName("ytcp-video-row");for(let j = 0; j < videoRows.length; ++j) {videoRows[j].isHighlighted = true;};'>  
 
         <br>
-        <h3>Adbreak Time Code</h3>
+        <h3>2. Adbreak Time Code</h3>
         <input type="text" value='const createTimes = async (timeInterval) => { function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }; const genFormattedString = async (number) => { return new Promise ((resolve, reject) => { let finalStr = ""; if(number >= 10) { finalStr = finalStr + number + ":00"; resolve(finalStr); } else { finalStr = finalStr + "0" + number + ":00"; resolve(finalStr); } }); }; let timeStamp = await document.querySelector("div.label.style-scope.ytcp-thumbnail").innerText; let timeArr = timeStamp.split(":"); let vidMinutes = parseInt(timeArr[0]); vidMinutes = vidMinutes/timeInterval; let interval = Math.floor(vidMinutes); for(let i=0; i < interval; ++i) { let inputs = await document.querySelectorAll("ytve-formatted-input"); await sleep(1000); inputs[0].onFocus(); let val = (i + 1)*timeInterval; inputs[0].childNodes[1].value = await genFormattedString(val); inputs[0].onBlur(); await sleep(1000); }; }; createTimes(4);'> </input >
         
+        <br>
+        <p>In case of error: 
+          <span style="color:red">Uncaught SyntaxError: Identifier 'createTimes' has already been declared</span>
+        </p>
+        <input type="text" value="createTimes(4)">
      <script src="homePage.js"></script>
     </body>
   </html>
