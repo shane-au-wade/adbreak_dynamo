@@ -42,32 +42,107 @@ const genFormattedString = async (number) => {
  * @param {time interval in minutes} timeInterval 
  */
 // adbreakRows[0].childNodes[5].childNodes[3].childNodes[0].childNodes[0].isFocused = true
-const createAdbreaks = async (timeInterval) => {
-    let timeStamp = await document.querySelector('div.label.style-scope.ytcp-thumbnail').innerText
-    let adBreaksButton = await document.querySelector('#add-ad-break')
-    let timeArr = timeStamp.split(':')
-    let vidMinutes = parseInt(timeArr[0])
-    vidMinutes = vidMinutes/timeInterval // lets say 5 minutes
-    let interval = Math.floor(vidMinutes)
-    for(let i=0; i < interval; ++i) {
-        adBreaksButton.click()
-        await sleep(100)
-    }
-    // await sleep(1000)
-    // for(let i=0; i < interval; ++i) {
-    //     //focus, update value, blur
-    //     // let adbreakRows = await document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
-    //     let inputs = await document.querySelectorAll("ytve-formatted-input")
-    //     await sleep(1000)
-    //     //console.log(inputs)
-    //     //inputs[0].onFocus()
-    //     let val = (i + 1)*timeInterval
-    //     inputs[i].childNodes[1].value = await genFormattedString(val)
-    //     //inputs[0].onblur()
-    //     // await sleep(1000)
-    // }
 
-}
+const createTimes = async (timeInterval) => { 
+    
+    function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }; 
+    
+    const genFormattedString = (number) => {
+         return new Promise ((resolve, reject) => {
+              let finalStr = ""; 
+                if(number < 10) {
+                    finalStr = finalStr + "0" + number + ":00"; 
+                    resolve(finalStr); 
+                } else if(number >= 10 && number < 60) { 
+                    finalStr = finalStr + number + ":00"; 
+                    resolve(finalStr); 
+                } else if(number >= 60) { 
+                    let hours = number/60;
+                    hours = Math.floor(hours);
+                    number -= hours*60;
+                        if(number< 10)
+                        {
+                            finalStr = finalStr + hours + ":0" + number + ":00";
+                        } else {
+                            finalStr = finalStr + hours + ":" + number + ":00";
+                        }
+                    resolve(finalStr);
+                } 
+            }); 
+        }; 
+
+        let timeStamp = await document.querySelector("div.label.style-scope.ytcp-thumbnail").innerText; 
+        let adBreaksButton = await document.querySelector("#add-ad-break");
+        let timeArr = timeStamp.split(":"); 
+        // let urlEnter = 'http://localhost:3000/enter'
+        // let urlClick = 'http://localhost:3000/click'
+        let urlTypeValue = "http://localhost:3000/typevalue/"
+        if( timeArr.length === 3)
+        {
+            let hours = parseInt(timeArr[0]);
+            let additionalMins = hours*60;
+            let vidMinutes = parseInt(timeArr[1]); 
+            vidMinutes += additionalMins;
+            vidMinutes = vidMinutes/timeInterval; 
+            let interval = Math.floor(vidMinutes); 
+
+            for(let i=0; i < interval; ++i) {
+                adBreaksButton.click();
+                await sleep(100);
+            };
+
+            for(let i=0; i < interval; ++i) {
+             let inputs = await document.querySelectorAll("ytve-formatted-input"); 
+             //await inputs[0].onFocus(); 
+             let val = (i + 1)*timeInterval; 
+             inputs[0].childNodes[1].value = await genFormattedString(val); 
+             await fetch(url, {
+                mode: 'no-cors', // no-cors, *cors, same-origin
+              });
+             //inputs[0].onBlur(); 
+             await sleep(500); 
+            } 
+        } else {
+            let vidMinutes = parseInt(timeArr[0]); 
+             vidMinutes = vidMinutes/timeInterval; 
+            let interval = Math.floor(vidMinutes); 
+
+            for(let i=0; i < interval; ++i) {
+                adBreaksButton.click();
+                await sleep(100);
+            };
+
+            for(let i=0; i < interval; ++i) {   
+                let val = (i + 1)*timeInterval; 
+                let finalUrl = urlTypeValue + val
+                await fetch(finalUrl, {
+                    mode: 'no-cors', // no-cors, *cors, same-origin
+                });
+                await sleep(1000); 
+            }; 
+        }
+        
+        
+        // save feature code
+         
+        // let con = await document.querySelector("#save-button");
+        // con.click();
+        // setTimeout( () => {
+        //     let buttons = document.getElementsByTagName("ytcp-button");
+        //     for(let i = 0; i < buttons.length; ++i) {
+        //         if(buttons[i].id === "save") {
+        //             console.log("changes saved");
+        //             buttons[i].click();
+        //         }
+        //     }
+
+        //     setTimeout( () => {
+        //         open(location, "_self").close();
+        //     }, 3000);
+
+        // }, 2000);
+       
+};
 
 const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
     console.log('timer start: ', initTime)
@@ -75,6 +150,7 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
         console.log('checking boxes now')
 
         // click the check boxes 3 times in total
+        let checkedBoxes = 0
         for(let loop = 0; loop < 5; ++loop)
         {
             console.log('updating checkboxes: ', loop)
@@ -88,21 +164,32 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
                 if(checkBoxs[i].getAttribute("aria-checked") == 'false') { 
                         console.log('box clicked!')
                         await checkBoxs[i].click()
+                } else {
+                    checkedBoxes++
                 }
             }
 
-            await sleep(loopSleepTime)
+            if(checkedBoxes >= 7){
+                console.log("all boxes checked: break")
+                break
+            } else {
+                checkedBoxes = 0
+                await sleep(loopSleepTime)
+            }
         }
         
 
         setTimeout( async() => {
-            let buttons = document.getElementsByTagName("ytcp-button")
-            for(let i = 0; i < buttons.length; ++i) {
-                if(buttons[i].id === 'save') {
-                    console.log('changes saved')
-                    buttons[i].click()
-                }
-            }
+            // let buttons = document.getElementsByTagName("ytcp-button")
+            // for(let i = 0; i < buttons.length; ++i) {
+            //     if(buttons[i].id === 'save') {
+            //         console.log('changes saved')
+            //         buttons[i].click()
+            //     }
+            // }
+
+            let saveButton = document.querySelector("ytcp-button#save")
+            saveButton.click()
 
             setTimeout(async () => {
                 console.log('closing now')
@@ -119,13 +206,13 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
                     await sleep(2000)
                     await openAndClearAdbreaks()
                     // await sleep(1000)
-                    //await createAdbreaks(4) // 4 minute time interval
+                    // await createTimes(4)
                     // let title = await document.querySelector('#dialog-title')
                     // let button = title.appendChild(document.createElement('button'))
                     // button.innerText = 'create adbreaks'
                     // button.addEventListener('click', () => {createAdbreaks(4)})
                 }
-            },3000)
+            },1000)
             
 
         }, saveTime)
@@ -148,7 +235,7 @@ document.addEventListener('readystatechange', (event) => {
                 // console.log('whole node:', mutations[mutations.length -1])
                 if(mutations[mutations.length -1].target.localName == 'iron-icon' && mutations[mutations.length -1].target.className == 'icon-right style-scope ytcp-anchor') {
                     console.log('all elements loaded')
-                    checkBoxesTimed(1000, 1000, 1000)
+                    checkBoxesTimed(250, 250, 1000)
                 }
             }
             let observerConfig = {

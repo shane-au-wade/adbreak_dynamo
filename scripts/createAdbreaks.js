@@ -50,6 +50,16 @@ createAdbreaks(4)
 
 
 
+let adBreaksButton = await document.querySelector("#add-ad-break");
+for(let i=0; i < 5; ++i) {
+    adBreaksButton.click();
+   
+};
+
+let focusFrame = document.querySelectorAll("ytve-framestamp-input")
+let activeFrame = document.querySelectorAll("div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel")
+// active frame
+// input
 
 ////////
 
@@ -87,6 +97,7 @@ const createTimes = async (timeInterval) => {
         let timeStamp = await document.querySelector("div.label.style-scope.ytcp-thumbnail").innerText; 
         let adBreaksButton = await document.querySelector("#add-ad-break");
         let timeArr = timeStamp.split(":"); 
+        let url = 'http://localhost:3000/hello'
         if( timeArr.length === 3)
         {
             let hours = parseInt(timeArr[0]);
@@ -100,13 +111,16 @@ const createTimes = async (timeInterval) => {
                 adBreaksButton.click();
                 await sleep(100);
             };
-
+           
             for(let i=0; i < interval; ++i) {
              let inputs = await document.querySelectorAll("ytve-formatted-input"); 
-             await inputs[0].onFocus(); 
+             //await inputs[0].onFocus(); 
              let val = (i + 1)*timeInterval; 
              inputs[0].childNodes[1].value = await genFormattedString(val); 
-             inputs[0].onBlur(); 
+             //inputs[0].onBlur(); 
+             fetch(url, {
+                mode: 'no-cors', // no-cors, *cors, same-origin
+              });
              await sleep(500); 
             } 
         } else {
@@ -124,7 +138,11 @@ const createTimes = async (timeInterval) => {
              await inputs[0].onFocus(); 
              let val = (i + 1)*timeInterval; 
              inputs[0].childNodes[1].value = await genFormattedString(val); 
-             inputs[0].onBlur(); 
+             //inputs[0].onBlur(); 
+             fetch(url, {
+                mode: 'no-cors', // no-cors, *cors, same-origin
+               
+              });
              await sleep(500); 
             }; 
         }

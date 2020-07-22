@@ -40,30 +40,95 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const openTabs = () => {
-    console.log('opening tabs')
-    let elems = document.getElementsByClassName("style-scope ytcp-video-list-cell-video hover-item")
-            
-    setTimeout( async () => {
-        let openCounter = 0
-        for(let i = 0; i < elems.length; ++i){
-                        if(elems[i].href) {
-                            if(elems[i].href.indexOf('monetization') >= 0){
-                            console.log(elems[i].href)
-                            openCounter++
-                            window.open(elems[i].href, '_blank')
-                            }
-                            
-                            if(openCounter === 1)
-                            {
-                                //console.log('sleeping')
-                                openCounter = 0
-                               await sleep(5000)
+const highlightAllRows = async () => {
+
+    let rows = document.querySelectorAll('ytcp-video-row')
+
+    for(let i = 0; i < rows.length; ++i) {
+        rows[i].setAttribute('is-highlighted',"")
+    }
+
+}
+
+
+
+const openTabs = async () => {
+
+    let navForward = document.querySelector("ytcp-icon-button#navigate-after")
+    let paginationArr = await document.querySelector("span.page-description.style-scope.ytcp-table-footer").innerText.split(" ")
+
+    let vidCount = parseInt(paginationArr[paginationArr.length - 1])
+    let pageCount = Math.floor(vidCount/50)
+
+    //for(let i = 0; i <= pageCount; ++i)
+    
+        await highlightAllRows()
+        console.log('opening tabs')
+        let elems = await document.getElementsByClassName("style-scope ytcp-video-list-cell-video hover-item")
+        let timeStamps = await document.querySelectorAll("div.label.style-scope.ytcp-thumbnail")
+        let sub10MinVids = []
+        let plus10MinVides = []
+       
+        setTimeout( async () => {
+            let timeStampCounter = 0
+            for(let i = 0; i < elems.length; ++i){
+                if(elems[i].href) {
+                    if(elems[i].href.indexOf('monetization') >= 0){
+                        //sort the elems into 10+ and sub 10
+                        let time = timeStamps[timeStampCounter].innerText
+                        let timeArr = time.split(":")
+                        if(timeArr.length >= 3)
+                        {
+                            //hour long video
+                            console.log("hour long video")
+                            plus10MinVides.push(elems[i])
+                        } else {
+                            time = parseInt(timeArr[0])
+                            if(time >= 10) {
+                                console.log("")
+                                plus10MinVides.push(elems[i])
+                            } else {
+                                sub10MinVids.push(elems[i])
                             }
                         }
+                
+                        timeStampCounter++
                     }
-    }, 1000)
-  
+                }
+            }
+    
+            // from this point on, the two arrays should have the links sort
+    
+            let openCounter = 0
+            for(let i = 0; i < sub10MinVids.length; ++i){
+                console.log(sub10MinVids[i].href)
+                openCounter++
+                window.open(sub10MinVids[i].href, '_blank')
+                if(openCounter === 1)
+                {
+                    //console.log('sleeping')
+                    openCounter = 0
+                    await sleep(6000)
+                }
+            }
+            
+            openCounter = 0
+            for(let i = 0; i < plus10MinVides.length; ++i){
+                console.log(`10+ min video: `,  plus10MinVides[i].href)
+                openCounter++
+                window.open(plus10MinVides[i].href, '_blank')
+                if(openCounter === 1)
+                {
+                    //console.log('sleeping')
+                    openCounter = 0
+                    await sleep(9000)
+                }
+            }
+
+        }, 1000)
+
+        
+
 }
 
 document.addEventListener('readystatechange', (event) => {
@@ -96,7 +161,7 @@ document.addEventListener('readystatechange', (event) => {
                         let homeRow = document.getElementsByTagName("ytcp-home-button") // array of items
                         // let highLightButton = homeRow[0].appendChild(document.createElement('button'))
                         // highLightButton.innerText = 'Highlight First'
-                        // highLightButton.addEventListener('click', showMonetization) 
+                        // highLightButton.addEventListener('click', highlightAllRows) 
                         let runButton = homeRow[0].appendChild(document.createElement('button'))
                         runButton.innerText = "Open Tabs"
                         runButton.addEventListener('click', openTabs)
