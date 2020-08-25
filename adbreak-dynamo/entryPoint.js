@@ -132,7 +132,7 @@ let openTabs = async () => {
     
     openCounter = 0
     for(let i = 0; i < plus10MinVides.length; ++i){
-        console.log(`10+ min video: `,  plus10MinVides[i])
+        console.log(`8+ min video: `,  plus10MinVides[i])
         openCounter++
         window.open(plus10MinVides[i], '_blank')
         if(openCounter === 1)
@@ -143,7 +143,7 @@ let openTabs = async () => {
         }
     }
 
-    sleep(60000) // sleep for 30 seconds to allow everything to load in
+    await sleep(9000) // sleep for 30 seconds to allow everything to load in
     sendAdbreaksHTTPRequest()
 }
 
