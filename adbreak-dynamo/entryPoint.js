@@ -62,7 +62,7 @@ let collectPageLinks = async () => {
                         plus10MinVides.push(elems[i].children[3].href)
                     } else {
                         time = parseInt(timeArr[0])
-                        if(time >= 10) {
+                        if(time >= 8) {
                             console.log("")
                             plus10MinVides.push(elems[i].children[3].href)
                         } else {
@@ -96,7 +96,6 @@ let initalizeObserver = async () => {
         console.log("collecting page links")
         observer.disconnect()
         mainLoop()
-       
     }
     let observerConfig = {
         subtree:true, 
@@ -105,6 +104,16 @@ let initalizeObserver = async () => {
     const observer = new MutationObserver( observerCallback )
     observer.observe(targetNode, observerConfig)
     return true
+}
+
+let sendAdbreaksHTTPRequest = () => {
+    // send a request to the local express server with the
+    // approximate number of open tabs 
+    let approxOpenTabs = plus10MinVides.length
+    let url = `http://localhost:3000/robot/createAdbreaks/${approxOpenTabs}`
+    fetch(url, {
+        mode: 'no-cors', // no-cors, *cors, same-origin
+    });
 }
 
 let openTabs = async () => {
@@ -133,6 +142,9 @@ let openTabs = async () => {
             await sleep(9000)
         }
     }
+
+    sleep(60000) // sleep for 30 seconds to allow everything to load in
+    sendAdbreaksHTTPRequest()
 }
 
 let mainLoop = async () => {
@@ -156,7 +168,6 @@ let main = async () => {
     await initalizeObserver()
     await highlightAllRows()
 }
-
 
 document.addEventListener('readystatechange', (event) => {
     //console.log(`readystate: ${document.readyState}\n`);
@@ -191,7 +202,17 @@ document.addEventListener('readystatechange', (event) => {
                         // highLightButton.innerText = 'Highlight First'
                         // highLightButton.addEventListener('click', highlightAllRows) 
                         let runButton = homeRow[0].appendChild(document.createElement('button'))
-                        runButton.innerText = "Open Tabs"
+                        runButton.innerText = "Monetize Channel"
+                        runButton.style.cssText = 
+                        `
+                        margin-left: 20px; 
+                        border-radius: 10px; 
+                        padding: 10px;
+                        background-color: red; 
+                        color: #ffffff; font-weight: 700; 
+                        border: none;
+                        box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12);
+                        `
                         runButton.addEventListener('click', main)
                     }, 3000)
 

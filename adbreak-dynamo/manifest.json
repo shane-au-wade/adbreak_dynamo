@@ -5,12 +5,12 @@
     "content_scripts": [
          {
             "matches": ["https://studio.youtube.com/video/*/monetization/ads"],
-            "js": ["checkBoxes.js"],
+            "js": ["monetize.js"],
             "run_at": "document_end"
          },
          {
             "matches": ["https://studio.youtube.com/channel/*/*"],
-            "js": ["rowUpdate.js"],
+            "js": ["entryPoint.js"],
             "run_at": "document_start"
          }
      ],
@@ -21,6 +21,6 @@
          
      },
      "permissions": [
-      "tabs", "https://studio.youtube.com/s/e95c104c/creator_studio_mod_binary_core_v2.js", "http://localhost:3000/hello","http://localhost:3000/click", "http://localhost:3000/typevalue/*"
+      "tabs", "https://studio.youtube.com/s/e95c104c/creator_studio_mod_binary_core_v2.js", "http://localhost:3000/hello","http://localhost:3000/click", "http://localhost:3000/typevalue/*", "http://localhost:3000/robot/createAdbreaks/*"
    ]
 }

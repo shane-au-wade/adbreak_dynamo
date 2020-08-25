@@ -34,8 +34,8 @@ function checkBoxesCopy() {
     document.execCommand("copy");
   }
 
-document.querySelector("#runAdbreakAuto").addEventListener("click", runAdbreakAuto);
-document.querySelector("#highlight_button").addEventListener("click", LaunchCopy);
+// document.querySelector("#runAdbreakAuto").addEventListener("click", runAdbreakAuto);
+// document.querySelector("#highlight_button").addEventListener("click", LaunchCopy);
 
 //  "browser_action": {
     //     "default_popup": "homePage.html"
