@@ -1,88 +1,156 @@
-// Move the mouse across the screen as a sine wave.
-// Type "Hello World" then press enter.
 const robot = require("robotjs");
+const clipboardy = require('clipboardy');
 const express = require('express')
 const app = express()
 const port = 3000
 
-const genFormattedString = (number) => {
-    return new Promise ((resolve, reject) => {
-         let finalStr = ""; 
-           if(number < 10) {
-               finalStr = finalStr + "0" + number + ":00"; 
-               resolve(finalStr); 
-           } else if(number >= 10 && number < 60) { 
-               finalStr = finalStr + number + ":00"; 
-               resolve(finalStr); 
-           } else if(number >= 60) { 
-               let hours = number/60;
-               hours = Math.floor(hours);
-               number -= hours*60;
-                   if(number< 10)
-                   {
-                       finalStr = finalStr + hours + ":0" + number + ":00";
-                   } else {
-                       finalStr = finalStr + hours + ":" + number + ":00";
-                   }
-               resolve(finalStr);
-           } 
-       }); 
-   }; 
+const mouseConfig = require("./config/mouseConfig.json")
+const keyboardConfig = require("./config/keyboardConfig.json")
+console.log(mouseConfig)
+console.log(keyboardConfig)
+robot.setMouseDelay(mouseConfig.mouseDelay)
+robot.setKeyboardDelay(keyboardConfig.keyboardDeplay)
 
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); };
 
-app.get('/enter', (req, res) => {
+app.get('/typevalue/:value', async (req, res) => {
 
-    // sleep(1000).then(() => {
-    //     // Type "Hello World".
-    //     robot.typeString("Hello World");
-        
-    //     // Press enter.
-    //     robot.keyTap("enter");
-    // })
-    
+    let str = await genFormattedString(req.params.value)
+    let cpm = 1000;
+    console.log(str)
+    robot.mouseClick("left","double");
+    robot.keyTap("backspace")
+    robot.keyTap("backspace")
+    robot.keyTap("backspace")
+    robot.typeStringDelayed( str , cpm)
     robot.keyTap("enter");
     res.status(200).send(true)
 })
 
-app.get('/click', (req, res) => {
+const createAdbreaks = async (tabs) => {
+    let loading = '.'
+    console.log("Creating ad breaks: ", tabs)
+    //clipboardy.writeSync(`console.log('hello world')`)
+    clipboardy.writeSync(
+    `const createTimes = async (timeInterval) => { 
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }; 
+        const clearAdbreaks = async () => {
+            for(let loop = 0; loop < 3; ++loop) {
+                let adbreakRows = await document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
+                for(let i = 0; i < adbreakRows.length; ++i) {
+                        let adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
+                        if(adbreakRows[i])
+                        {
+                             adbreakRows[i].childNodes[3].click()
+                        }  
+                    }
+            }   
+        }
+        const genFormattedString = (number) => { 
+            return new Promise ((resolve, reject) => { 
+                let finalStr = ""; 
+                if(number < 10) { 
+                    finalStr = finalStr + "0" + number + ":00"; 
+                    resolve(finalStr); 
+                } else if(number >= 10 && number < 60) { 
+                    finalStr = finalStr + number + ":00"; resolve(finalStr); 
+                } else if(number >= 60) { 
+                    let hours = number/60; hours = Math.floor(hours); 
+                    number -= hours*60; 
+                    if(number< 10) { 
+                        finalStr = finalStr + hours + ":0" + number + ":00"; 
+                    } else { 
+                        finalStr = finalStr + hours + ":" + number + ":00"; 
+                    } 
+                    resolve(finalStr); } 
+                }); 
+            }; 
+            await clearAdbreaks()    
+            let timeStamp = await document.querySelector("div.label.style-scope.ytcp-thumbnail").innerText; 
+            let adBreaksButton = await document.querySelector("#add-ad-break"); 
+            let timeArr = timeStamp.split(":"); 
+            if( timeArr.length === 3) { 
+                let hours = parseInt(timeArr[0]); 
+                let additionalMins = hours*60; 
+                let vidMinutes = parseInt(timeArr[1]); 
+                vidMinutes += additionalMins; 
+                vidMinutes = vidMinutes/timeInterval; 
+                let interval = Math.floor(vidMinutes); 
+                for(let i=0; i < interval; ++i) { 
+                    adBreaksButton.click(); 
+                    await sleep(100); 
+                }; 
+                for(let i=0; i < interval; ++i) { 
+                    let inputs = await document.querySelectorAll("ytve-formatted-input"); 
+                    await inputs[0].onFocus(); 
+                    let val = (i + 1)*timeInterval; 
+                    inputs[0].childNodes[1].value = await genFormattedString(val); 
+                    inputs[0].onBlur(); 
+                    await sleep(500); 
+                } 
+            } else { 
+                let vidMinutes = parseInt(timeArr[0]); 
+                vidMinutes = vidMinutes/timeInterval; 
+                let interval = Math.floor(vidMinutes); 
+                for(let i=0; i < interval; ++i) { 
+                    adBreaksButton.click(); 
+                    await sleep(100); 
+                }; 
+                for(let i=0; i < interval; ++i) {
+                     let inputs = await document.querySelectorAll("ytve-formatted-input"); 
+                     await inputs[0].onFocus(); 
+                     let val = (i + 1)*timeInterval; 
+                     inputs[0].childNodes[1].value = await genFormattedString(val); 
+                     inputs[0].onBlur(); 
 
-    // sleep(1000).then(() => {
-    //     // Type "Hello World".
-    //     robot.typeString("Hello World");
-        
-    //     // Press enter.
-    //     robot.keyTap("enter");
-    // })
-    
-    robot.mouseClick();
+                     await sleep(500); 
+                    }; 
+                } 
+                let con = await document.querySelector("#save-button"); 
+                con.click(); 
+                setTimeout( () => { 
+                    let buttons = document.getElementsByTagName("ytcp-button"); 
+                    for(let i = 0; i < buttons.length; ++i) { 
+                        if(buttons[i].id === "save") { 
+                            console.log("changes saved"); 
+                            buttons[i].click(); 
+                        } 
+                    } 
+                    setTimeout( () => { 
+                        open(location, "_self").close(); 
+                    }, 3000); 
+                }, 2000); 
+            }; 
+            createTimes(4);
+    `  
+    )
+    sleep(2000)
+    robot.moveMouse(mouseConfig.tabLocation.x, mouseConfig.tabLocation.y);
+    robot.mouseClick()
+    await sleep(500)
+    for(let i = 0; i < tabs; ++i) {
+            robot.keyTap('tab', 'control')
+            await sleep(500)
+            robot.keyTap('f12')
+            await sleep(1000)
+            robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
+            robot.mouseClick()
+            robot.keyTap('v', 'control')
+            await sleep(500)
+            robot.keyTap('enter')
+            console.log(`tab: ${i + 1} | complete`)
+            await sleep(1000)
+    }
+}
+
+app.get('/robot/createAdbreaks/:tab_count', async (req, res) => {
+    createAdbreaks(req.params.tab_count)
     res.status(200).send(true)
 })
 
-app.get('/typevalue/:value', async (req, res) => {
-
-    // sleep(1000).then(() => {
-    //     // Type "Hello World".
-    //     robot.typeString("Hello World");
-        
-    //     // Press enter.
-    //     robot.keyTap("enter");
-    // })
-    //console.log(req.params.value)
-    let str = await genFormattedString(req.params.value)
-    let cpm = 1000;
-    console.log(str)
-    await robot.mouseClick("left","double");
-    await robot.keyTap("backspace")
-    await robot.keyTap("backspace")
-    await robot.keyTap("backspace")
-    await robot.typeStringDelayed( str , cpm)
-    await robot.keyTap("enter");
-    res.status(200).send(true)
-})
-
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(port, () => console.table({ port: `http://localhost:${port}` } ))
  
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); };
+
 
 
 
