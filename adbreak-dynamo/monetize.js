@@ -43,6 +43,7 @@ const clickUncheckedEnabledBoxes = async () => {
 const checkBoxes = async () => {
     // check all ad type boxes
     await clickUncheckedEnabledBoxes()
+    await sleep(1000)
     // check if the 'during video' box is disabled
     let midRollBoxDisabled = await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").ariaDisabled
     if(midRollBoxDisabled === 'false') {

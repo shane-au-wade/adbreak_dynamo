@@ -173,7 +173,8 @@ let initStartObserver = () => {
     let targetNode = document.querySelector('ytcp-app')
     //console.log(targetNode)
     let observerCallback = async (mutations, observer) => { 
-        console.log('mutations: ', mutations)
+        //console.log('mutations: ', mutations)
+        console.log('page loaded')
         observer.disconnect()
         // scroll to bottom of page
         let mainBody = document.getElementById('main')

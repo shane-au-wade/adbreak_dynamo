@@ -28,7 +28,7 @@ app.get('/typevalue/:value', async (req, res) => {
 })
 
 const createAdbreaks = async (tabs) => {
-    console.log("Creating ad breaks: ", tabs)
+    console.log("Creating ad breaks")
     //clipboardy.writeSync(`console.log('hello world')`)
     clipboardy.writeSync(
     `
@@ -142,7 +142,6 @@ const createAdbreaks = async (tabs) => {
             robot.keyTap('v', 'control')
             await sleep(500)
             robot.keyTap('enter')
-            console.log(`tab: ${i + 1} | complete`)
             await sleep(1000)
     }
 }
