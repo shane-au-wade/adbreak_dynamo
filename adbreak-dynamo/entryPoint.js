@@ -91,7 +91,7 @@ let openTabs = async () => {
         {
             //console.log('sleeping')
             openCounter = 0
-            await sleep(6000)
+            await sleep(6500)
         }
     }
     console.log('<8 minute videos monetized')

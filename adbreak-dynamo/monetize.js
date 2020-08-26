@@ -19,7 +19,7 @@ const clearAdbreaks = async () => {
     while(adbreakRows.length != 0) {
         for(let i = 0; i < adbreakRows.length; ++i) {
            adbreakRows[i].children[1].click()
-           await sleep(10)
+           await sleep(30)
         }
         adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
         //console.log(adbreakRows.length)
@@ -33,7 +33,7 @@ const clickUncheckedEnabledBoxes = async () => {
     while(uncheckedAdType.length != 0) {
         for(let i = 0; i < uncheckedAdType.length; ++i) {
             uncheckedAdType[i].click()
-            await sleep(10)
+            await sleep(30)
         }
         uncheckedAdType = document.querySelectorAll('ytcp-checkbox-lit[aria-checked="false"][aria-disabled="false"')
     }
@@ -43,7 +43,7 @@ const clickUncheckedEnabledBoxes = async () => {
 const checkBoxes = async () => {
     // check all ad type boxes
     await clickUncheckedEnabledBoxes()
-    await sleep(1000)
+    await sleep(500)
     // check if the 'during video' box is disabled
     let midRollBoxDisabled = await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").ariaDisabled
     if(midRollBoxDisabled === 'false') {
@@ -55,9 +55,15 @@ const checkBoxes = async () => {
     } else {
         // < 8 minute video, save and close window
         console.log('save and close')
-        await document.querySelector("ytcp-button#save").click()
-        await sleep(2000)
-        open(location, '_self').close();
+        let saveButton = document.querySelector("ytcp-button#save")
+        if(saveButton.ariaDisabled === 'true') {
+            open(location, '_self').close();
+        } else {
+            saveButton.click()
+            await sleep(2000)
+            open(location, '_self').close();
+        }
+        
     }
 }
 

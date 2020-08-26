@@ -35,16 +35,16 @@ const createAdbreaks = async (tabs) => {
     const createTimes = async (timeInterval) => { 
         function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }; 
         const clearAdbreaks = async () => {
-            for(let loop = 0; loop < 3; ++loop) {
-                let adbreakRows = await document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
+            let adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
+            while(adbreakRows.length != 0) {
                 for(let i = 0; i < adbreakRows.length; ++i) {
-                        let adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
-                        if(adbreakRows[i])
-                        {
-                             adbreakRows[i].childNodes[3].click()
-                        }  
-                    }
-            }   
+                   adbreakRows[i].children[1].click()
+                   await sleep(30)
+                }
+                adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
+                //console.log(adbreakRows.length)
+            }
+            return true
         }
         const genFormattedString = (number) => { 
             return new Promise ((resolve, reject) => { 
@@ -102,33 +102,26 @@ const createAdbreaks = async (tabs) => {
                      let val = (i + 1)*timeInterval; 
                      inputs[0].childNodes[1].value = await genFormattedString(val); 
                      inputs[0].onBlur(); 
-
+    
                      await sleep(500); 
                     }; 
                 } 
-                let con = await document.querySelector("#save-button"); 
-                con.click(); 
-                setTimeout( async () => { 
-                    let saveButton = document.querySelector('div#tab-button-container ytcp-button#save')
-                    saveButton.click()
-                    let index = await parseInt(localStorage.getItem('index'))
-                    let links = await JSON.parse(localStorage.getItem('links'))
-                   
-                    ++index
-                    localStorage.setItem('index', index)
-                   
-                    setTimeout( () => { 
-                        open(location, "_self").close(); 
-                    }, 1000); 
-
-                    window.open(links[index])
-
-                }, 2000); 
+                await document.querySelector("#save-button").click(); // continue button
+                await sleep(800)
+                await document.querySelector('div#tab-button-container ytcp-button#save').click()
+                let index = await parseInt(localStorage.getItem('index'))
+                let links = await JSON.parse(localStorage.getItem('links'))
+                ++index
+                localStorage.setItem('index', index)
+                await sleep(500)
+                window.open(links[index])
+                await sleep(500)
+                open(location, "_self").close(); 
             }; 
-            createTimes(4);
+    createTimes(4);
     `  
     )
-    sleep(2000)
+    await sleep(500)
     robot.moveMouse(mouseConfig.tabLocation.x, mouseConfig.tabLocation.y);
     robot.mouseClick()
     await sleep(500)
