@@ -7,6 +7,15 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+let sendAdbreaksHTTPRequest = () => {
+    // send a request to the local express server with the
+    // approximate number of open tabs 
+    let url = `http://localhost:3000/robot/createAdbreaks/1`
+    fetch(url, {
+        mode: 'no-cors', // no-cors, *cors, same-origin
+    });
+}
+
 const openAndClearAdbreaks = async () => {
     
     for(let loop = 0; loop < 3; ++loop) {
@@ -18,6 +27,10 @@ const openAndClearAdbreaks = async () => {
                      adbreakRows[i].childNodes[3].click()
                 }  
             }
+        if((loop + 1) === 3) {
+            await sleep(1000)
+            sendAdbreaksHTTPRequest()
+        }
     }
     
 }
@@ -78,7 +91,7 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
                     //this is not a 10 minute vid
                     open(location, '_self').close();
                 } else {
-                    // this is a 10 minute video and we should do ad breaks
+                    // this is a 8 minute video and we should do ad breaks
                     console.log('run manual adbreak code')
                     await document.querySelector('#place-manually-button').click()
                     await sleep(2000)
@@ -92,32 +105,33 @@ const checkBoxesTimed = (initTime, loopSleepTime, saveTime) => {
     }, initTime)
 }
 
+let initObserver = () => {
+    let targetNode = document.querySelector('ytcp-app')
+    console.log(targetNode)
+    let observerCallback = (mutations, observer) => { 
+        
+        // console.log('child added: ', mutations[mutations.length -1].target) 
+        // console.log('whole node:', mutations[mutations.length -1])
+        if(mutations[mutations.length -1].target.localName == 'iron-icon' && mutations[mutations.length -1].target.className == 'icon-right style-scope ytcp-anchor') {
+            console.log('all elements loaded')
+            checkBoxesTimed(250, 250, 1000)
+        }
+    }
+    let observerConfig = {
+        childList:true,
+        subtree:true
+    }
+    const observer = new MutationObserver( observerCallback )
+    observer.observe(targetNode, observerConfig)
+}
+
 document.addEventListener('readystatechange', (event) => {
     //console.log(`readystate: ${document.readyState}\n`);
-
     if(document.readyState === 'complete')
     {
         setTimeout( () => {
-            //ytcp-animatable.page.selected.style-scope.ytcp-app
-            let targetNode = document.querySelector('ytcp-app')
-            console.log(targetNode)
-            let observerCallback = (mutations, observer) => { 
-                
-                // console.log('child added: ', mutations[mutations.length -1].target) 
-                // console.log('whole node:', mutations[mutations.length -1])
-                if(mutations[mutations.length -1].target.localName == 'iron-icon' && mutations[mutations.length -1].target.className == 'icon-right style-scope ytcp-anchor') {
-                    console.log('all elements loaded')
-                    checkBoxesTimed(250, 250, 1000)
-                }
-            }
-            let observerConfig = {
-                childList:true,
-                subtree:true
-            }
-            const observer = new MutationObserver( observerCallback )
-            observer.observe(targetNode, observerConfig)
+           initObserver()
         }, 1000)
-       
         //checkBoxesTimed(55000, 3000, 3000)
     }
 });
@@ -130,7 +144,6 @@ document.addEventListener('readystatechange', (event) => {
 //         checkBoxs[i].click()
 //     }
 // }
-
 
 // let buttons = document.getElementsByTagName("ytcp-button")
 // for(let i = 0; i < buttons.length; ++i) {

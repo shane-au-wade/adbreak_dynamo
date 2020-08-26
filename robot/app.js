@@ -28,11 +28,11 @@ app.get('/typevalue/:value', async (req, res) => {
 })
 
 const createAdbreaks = async (tabs) => {
-    let loading = '.'
     console.log("Creating ad breaks: ", tabs)
     //clipboardy.writeSync(`console.log('hello world')`)
     clipboardy.writeSync(
-    `const createTimes = async (timeInterval) => { 
+    `
+    const createTimes = async (timeInterval) => { 
         function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }; 
         const clearAdbreaks = async () => {
             for(let loop = 0; loop < 3; ++loop) {
@@ -108,17 +108,21 @@ const createAdbreaks = async (tabs) => {
                 } 
                 let con = await document.querySelector("#save-button"); 
                 con.click(); 
-                setTimeout( () => { 
-                    let buttons = document.getElementsByTagName("ytcp-button"); 
-                    for(let i = 0; i < buttons.length; ++i) { 
-                        if(buttons[i].id === "save") { 
-                            console.log("changes saved"); 
-                            buttons[i].click(); 
-                        } 
-                    } 
+                setTimeout( async () => { 
+                    let saveButton = document.querySelector('div#tab-button-container ytcp-button#save')
+                    saveButton.click()
+                    let index = await parseInt(localStorage.getItem('index'))
+                    let links = await JSON.parse(localStorage.getItem('links'))
+                   
+                    ++index
+                    localStorage.setItem('index', index)
+                   
                     setTimeout( () => { 
                         open(location, "_self").close(); 
-                    }, 3000); 
+                    }, 1000); 
+
+                    window.open(links[index])
+
                 }, 2000); 
             }; 
             createTimes(4);
