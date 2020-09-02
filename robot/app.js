@@ -66,7 +66,7 @@ const createAdbreaks = async (tabs) => {
                 }); 
             }; 
             await clearAdbreaks()    
-            let timeStamp = await document.querySelector("div.label.style-scope.ytcp-thumbnail").innerText; 
+            let timeStamp = await document.querySelector('ytcp-thumbnail.thumbnail.video-thumbnail.style-scope.ytcp-navigation-drawer div div.timestamp.style-scope.ytcp-thumbnail div').innerText; 
             let adBreaksButton = await document.querySelector("#add-ad-break"); 
             let timeArr = timeStamp.split(":"); 
             if( timeArr.length === 3) { 
@@ -130,17 +130,59 @@ const createAdbreaks = async (tabs) => {
             await sleep(500)
             robot.keyTap('f12')
             await sleep(1000)
-            robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
-            robot.mouseClick()
-            robot.keyTap('v', 'control')
+            // robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
+            // robot.mouseClick()
+            robot.keyTap('v', 'command')
             await sleep(500)
             robot.keyTap('enter')
             await sleep(1000)
     }
 }
 
+const skipVideo = async () => {
+    console.log("Skipping bad video")
+    //clipboardy.writeSync(`console.log('hello world')`)
+    clipboardy.writeSync(
+    `
+    const skipVideo = async (timeInterval) => { 
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }; 
+                await document.querySelector('div#tab-button-container ytcp-button#save').click()
+                let index = await parseInt(localStorage.getItem('index'))
+                let links = await JSON.parse(localStorage.getItem('links'))
+                await sleep(500)
+                ++index
+                localStorage.setItem('index', index)
+                await sleep(500)
+                window.open(links[index])
+                await sleep(500)
+                open(location, "_self").close(); 
+            }; 
+    skipVideo();
+    `  
+    )
+    await sleep(500)
+    robot.moveMouse(mouseConfig.tabLocation.x, mouseConfig.tabLocation.y);
+    robot.mouseClick()
+    await sleep(500)
+    robot.keyTap('tab', 'control')
+    await sleep(500)
+    robot.keyTap('f12')
+    await sleep(1000)
+    // robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
+    // robot.mouseClick()
+    robot.keyTap('v', 'command')
+    await sleep(500)
+    robot.keyTap('enter')
+    await sleep(1000)
+}
+
 app.get('/robot/createAdbreaks/:tab_count', async (req, res) => {
     createAdbreaks(req.params.tab_count)
+    res.status(200).send(true)
+})
+
+app.get('/robot/skip', async (req, res) => {
+    skipVideo()
     res.status(200).send(true)
 })
 
