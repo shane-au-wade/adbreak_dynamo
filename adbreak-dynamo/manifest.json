@@ -5,7 +5,7 @@
     "content_scripts": [
          {
             "matches": ["https://studio.youtube.com/video/*/monetization/ads"],
-            "js": ["monetizeNoAdbreaks.js"],
+            "js": ["monetize.js"],
             "run_at": "document_end"
          },
          {
