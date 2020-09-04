@@ -8,27 +8,19 @@ function sleep(ms) {
 }
 
 let sendSkipHTTPRequest = () => {
-    let url = `http://localhost:3000/robot/skip`
-    fetch(url, {
-        mode: 'no-cors', // no-cors, *cors, same-origin
-    });
-}
-
-const clearAdbreaks = async () => {
-    let adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
-    while(adbreakRows.length != 0) {
-        for(let i = 0; i < adbreakRows.length; ++i) {
-           adbreakRows[i].children[1].click()
-           await sleep(30)
-        }
-        adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
-        //console.log(adbreakRows.length)
-    }
-    await sleep(1000)
-    await document.querySelector("#save-button").click(); // continue button
-    await sleep(800)
-    await document.querySelector('div#tab-button-container ytcp-button#save').click()
-    return true
+    // let url = `http://localhost:3000/robot/skip`
+    // fetch(url, {
+    //     mode: 'no-cors', // no-cors, *cors, same-origin
+    // });
+    let index = await parseInt(localStorage.getItem('index'))
+    let links = await JSON.parse(localStorage.getItem('links'))
+    await sleep(500)
+    ++index
+    localStorage.setItem('index', index)
+    await sleep(500)
+    window.open(links[index])
+    await sleep(500)
+    open(location, "_self").close();
 }
 
 const clickUncheckedEnabledBoxes = async () => {
@@ -39,6 +31,18 @@ const clickUncheckedEnabledBoxes = async () => {
             await sleep(30)
         }
         uncheckedAdType = document.querySelectorAll('ytcp-checkbox-lit[aria-checked="false"][aria-disabled="false"')
+    }
+    return true
+}
+
+const disableMidrollAds = async () => {
+    let uncheckedAdType = document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings[aria-checked='true']")
+    while(uncheckedAdType.length != 0) {
+        for(let i = 0; i < uncheckedAdType.length; ++i) {
+            uncheckedAdType[i].click()
+            await sleep(30)
+        }
+        uncheckedAdType = document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings[aria-checked='true']")
     }
     return true
 }
@@ -66,6 +70,18 @@ const saveAndExit = async () => {
     }
 }
 
+const openNewPage = async () => {
+    console.log('opening new page')
+    let index = await parseInt(localStorage.getItem('index'))
+    let links = await JSON.parse(localStorage.getItem('links'))
+    ++index
+    localStorage.setItem('index', index)
+    await sleep(500)
+    window.open(links[index])
+    await sleep(500)
+    return true
+}
+
 const checkBoxes = async () => {
     // check all ad type boxes
     await clickUncheckedEnabledBoxes()
@@ -76,9 +92,10 @@ const checkBoxes = async () => {
     if(midRollBoxDisabled === 'false') {
         //8+ minute video
         await clickUncheckedEnabledBoxes()
-        await document.querySelector('#place-manually-button').click() // open adbreak menu
-        await sleep(2000)
-        await clearAdbreaks() // clear out existing adbreaks
+        await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
+        await sleep(1000)
+        // write logic to update the index of page and open the new page
+        await openNewPage()
         saveAndExit() 
     } else if(longVideo) {
         sendSkipHTTPRequest()
