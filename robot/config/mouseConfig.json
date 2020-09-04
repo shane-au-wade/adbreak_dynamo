@@ -1,11 +1,11 @@
 {
     "tabLocation": {
-        "x": 99,
-        "y": 47
+        "x": 120,
+        "y": 50
     },
     "consoleLocation": {
-        "x": 2244,
-        "y": 983
+        "x": 1390,
+        "y": 900
     },
     "mouseDelay": 10
 }
