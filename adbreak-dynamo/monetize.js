@@ -51,11 +51,18 @@ const isVideoLong = async () => {
     let timeStamp = await document.querySelector('ytcp-thumbnail.thumbnail.video-thumbnail.style-scope.ytcp-navigation-drawer div div.timestamp.style-scope.ytcp-thumbnail div').innerText
     let timeArr = timeStamp.split(':')
     let minutes = parseInt(timeArr[0])
-    if(minutes >= 8) {
+    if(timeArr.length >= 3) {
+        // 1 hour video
         return true
     } else {
-        return false
+        // less than 1 hour video
+        if(minutes >= 8) {
+            return true
+        } else {
+            return false
+        }
     }
+    
 }
 
 const checkBoxes = async () => {

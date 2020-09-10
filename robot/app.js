@@ -110,12 +110,14 @@ const createAdbreaks = async (tabs) => {
                 await sleep(800)
                 await document.querySelector('div#tab-button-container ytcp-button#save').click()
                 let index = await parseInt(localStorage.getItem('index'))
-                let links = await JSON.parse(localStorage.getItem('links'))
+                let links = await JSON.parse(await localStorage.getItem('links'))
+                await sleep(800)
                 ++index
                 localStorage.setItem('index', index)
-                await sleep(500)
+                await sleep(800)
+                console.log('Opening Link: ', links[index])
                 window.open(links[index])
-                await sleep(500)
+                await sleep(800)
                 open(location, "_self").close(); 
             }; 
     createTimes(4);
@@ -130,8 +132,8 @@ const createAdbreaks = async (tabs) => {
             await sleep(500)
             robot.keyTap('f12')
             await sleep(1000)
-            // robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
-            // robot.mouseClick()
+            robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
+            robot.mouseClick()
             robot.keyTap('v', 'command')
             await sleep(500)
             robot.keyTap('enter')
