@@ -12,6 +12,11 @@
             "matches": ["https://studio.youtube.com/channel/*/*"],
             "js": ["entryPoint.js"],
             "run_at": "document_start"
+         },
+         {
+            "matches": ["https://www.gatorgroceries.com/*"],
+            "js": ["test.js"],
+            "run_at": "document_start"
          }
      ],
      "background": {
