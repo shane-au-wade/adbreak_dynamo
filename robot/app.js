@@ -134,7 +134,7 @@ const createAdbreaks = async (tabs) => {
             await sleep(1000)
             robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
             robot.mouseClick()
-            robot.keyTap('v', 'command')
+            robot.keyTap('v', ['control','shift'])
             await sleep(500)
             robot.keyTap('enter')
             await sleep(1000)
@@ -172,7 +172,7 @@ const skipVideo = async () => {
     await sleep(1000)
     robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
     robot.mouseClick()
-    robot.keyTap('v', 'command')
+    robot.keyTap('v', ['control','shift'])
     await sleep(500)
     robot.keyTap('enter')
     await sleep(1000)
