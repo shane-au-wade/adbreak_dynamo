@@ -46,7 +46,7 @@ let storeLongVideo = async (href) => {
 let storeShortVideo = async (href) => {
     // this should create a session storage item that maps
     // the current counter to a link
-    localStorage.setItem(sub10Counter, href)
+    sessionStorage.setItem(sub10Counter, href)
     sub10Counter++
     return true
 }
@@ -65,13 +65,13 @@ let collectPageLinks = async () => {
                     if(timeArr.length >= 3)
                     {
                         //hour long video
-                        console.log("hour long video")
+                        //console.log("hour long video")
                         //plus10MinVides.push(elems[i].children[3].href)
                         await storeLongVideo(elems[i].children[3].href)
                     } else {
                         time = parseInt(timeArr[0])
                         if(time >= 8) {
-                            console.log("")
+                            //console.log(">8 min video")
                             //plus10MinVides.push(elems[i].children[3].href)
                             await storeLongVideo(elems[i].children[3].href)
                         } else {
@@ -82,8 +82,9 @@ let collectPageLinks = async () => {
             }
 
             if((i+1) === elems.length) {
-                console.log(sub10MinVids)
-                console.log(plus10MinVides)
+                //console.log(sub10MinVids)
+                //console.log(plus10MinVides)
+                console.log('Success: links scrapped')
                 return true
             }
         }
@@ -121,14 +122,16 @@ let openTabs = async () => {
 
     // begin 8+ minute video monetization routine
     // localStorage.setItem('links', JSON.stringify(plus10MinVides))
-    // localStorage.setItem('index', 0)
-    // await sleep(1000) // let local storage code execute
-    // console.log('Starting 8+ minute video monetization')
-    // window.open(plus10MinVides[0])
+    localStorage.setItem('index', 0)
+    await sleep(1000) // let local storage code execute
+    console.log('Starting 8+ minute video monetization')
+    window.open(localStorage.getItem(0))
 }
 
 let mainLoop = async () => {
     console.log('entering main loop')
+    sessionStorage.clear()
+    localStorage.clear()
     let morePages =  true
     while(morePages) { 
         console.log('collecting page links: ', _currentPage)

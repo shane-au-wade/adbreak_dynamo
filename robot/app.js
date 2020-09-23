@@ -111,9 +111,9 @@ const createAdbreaks = async (tabs) => {
                 await document.querySelector('div#tab-button-container ytcp-button#save').click()
                 let index = await parseInt(localStorage.getItem('index'))
                 //let links = await JSON.parse(await localStorage.getItem('links'))
+                ++index
                 let link = localStorage.getItem(index)
                 await sleep(800)
-                ++index
                 localStorage.setItem('index', index)
                 await sleep(800)
                 console.log('Opening Link: ', link)
@@ -151,12 +151,13 @@ const skipVideo = async () => {
         function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }; 
                 await document.querySelector('div#tab-button-container ytcp-button#save').click()
                 let index = await parseInt(localStorage.getItem('index'))
-                let links = await JSON.parse(localStorage.getItem('links'))
-                await sleep(500)
+                //let links = await JSON.parse(await localStorage.getItem('links'))
                 ++index
+                let link = localStorage.getItem(index)
+                await sleep(500)
                 localStorage.setItem('index', index)
                 await sleep(500)
-                window.open(links[index])
+                window.open(link)
                 await sleep(500)
                 open(location, "_self").close(); 
             }; 
