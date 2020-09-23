@@ -110,13 +110,14 @@ const createAdbreaks = async (tabs) => {
                 await sleep(800)
                 await document.querySelector('div#tab-button-container ytcp-button#save').click()
                 let index = await parseInt(localStorage.getItem('index'))
-                let links = await JSON.parse(await localStorage.getItem('links'))
+                //let links = await JSON.parse(await localStorage.getItem('links'))
+                let link = localStorage.getItem(index)
                 await sleep(800)
                 ++index
                 localStorage.setItem('index', index)
                 await sleep(800)
-                console.log('Opening Link: ', links[index])
-                window.open(links[index])
+                console.log('Opening Link: ', link)
+                window.open(link)
                 await sleep(800)
                 open(location, "_self").close(); 
             }; 
