@@ -1,6 +1,8 @@
 console.log('row update script loaded')
 var sub10MinVids = [] // global list of < 10min videos
 var plus10MinVides = [] // global list of > 10min videos
+var plus10Counter = 0 // global counter for index of current +10 min video
+var sub10Counter = 0 // global counter for index of current <10 min video
 var _pageCount = 0 // global page count
 var _currentPage = 0
 // helper sleep function
@@ -33,6 +35,22 @@ let getPageCount = async () => {
     return pageCount
 }
 
+let storeLongVideo = async (href) => {
+    // this should create a local storage item that maps
+    // the current counter to a link
+    localStorage.setItem(plus10Counter, href)
+    plus10Counter++
+    return true
+}
+
+let storeShortVideo = async (href) => {
+    // this should create a session storage item that maps
+    // the current counter to a link
+    localStorage.setItem(sub10Counter, href)
+    sub10Counter++
+    return true
+}
+
 let collectPageLinks = async () => {
     
     let elems = document.querySelectorAll('div#hover-items')
@@ -48,14 +66,17 @@ let collectPageLinks = async () => {
                     {
                         //hour long video
                         console.log("hour long video")
-                        plus10MinVides.push(elems[i].children[3].href)
+                        //plus10MinVides.push(elems[i].children[3].href)
+                        await storeLongVideo(elems[i].children[3].href)
                     } else {
                         time = parseInt(timeArr[0])
                         if(time >= 8) {
                             console.log("")
-                            plus10MinVides.push(elems[i].children[3].href)
+                            //plus10MinVides.push(elems[i].children[3].href)
+                            await storeLongVideo(elems[i].children[3].href)
                         } else {
-                            sub10MinVids.push(elems[i].children[3].href)
+                            //sub10MinVids.push(elems[i].children[3].href)
+                            await storeShortVideo(elems[i].children[3].href)
                         }
                     }
             }
@@ -83,10 +104,11 @@ let navigateForward = async () => {
 let openTabs = async () => {
     // open shorter length videos first
     let openCounter = 0
-    for(let i = 0; i < sub10MinVids.length; ++i){
-        console.log(sub10MinVids[i])
+    for(let i = 0; i < sub10Counter; ++i){
+        let curLink = sessionStorage.getItem(i)
+        console.log(curLink)
         openCounter++
-        window.open(sub10MinVids[i], '_blank')
+        window.open(curLink, '_blank')
         if(openCounter === 1)
         {
             //console.log('sleeping')
@@ -95,13 +117,14 @@ let openTabs = async () => {
         }
     }
     console.log('<8 minute videos monetized')
+    
 
     // begin 8+ minute video monetization routine
-    localStorage.setItem('links', JSON.stringify(plus10MinVides))
-    localStorage.setItem('index', 0)
-    await sleep(1000) // let local storage code execute
-    console.log('Starting 8+ minute video monetization')
-    window.open(plus10MinVides[0])
+    // localStorage.setItem('links', JSON.stringify(plus10MinVides))
+    // localStorage.setItem('index', 0)
+    // await sleep(1000) // let local storage code execute
+    // console.log('Starting 8+ minute video monetization')
+    // window.open(plus10MinVides[0])
 }
 
 let mainLoop = async () => {
