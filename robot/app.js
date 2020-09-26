@@ -7,6 +7,12 @@ const routines = require('./routines')
 
 var tabResetTimeout
 
+app.use(express.static("public"));
+
+app.get('/config', async (req, res) => {
+    res.status(200).sendFile(__dirname + '/public/index.html');
+})
+
 app.get('/typevalue/:value', async (req, res) => {
 
     let str = await genFormattedString(req.params.value)
