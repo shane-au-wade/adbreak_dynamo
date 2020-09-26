@@ -1,6 +1,6 @@
 const robot = require("robotjs");
-const mouseConfig = require("./config/mouseConfig.json")
-const keyboardConfig = require("./config/keyboardConfig.json")
+const mouseConfig = require("../config/mouseConfig.json")
+const keyboardConfig = require("../config/keyboardConfig.json")
 console.log(mouseConfig)
 console.log(keyboardConfig)
 robot.setMouseDelay(mouseConfig.mouseDelay)
