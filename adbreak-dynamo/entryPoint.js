@@ -141,6 +141,12 @@ let mainLoop = async () => {
         await sleep(2000)
         console.log('more pages: ', morePages)
         ++_currentPage   
+        /**
+         * The following code is used to stop the bot after a certain amount of pages
+         */
+        // if(_currentPage == 60) {
+        //     morePages = false
+        // }
     }
     console.log('All links scraped, opening tabs')
     // from this point on, the two arrays should have the links sorted
