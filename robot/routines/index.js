@@ -2,6 +2,8 @@ const robot = require("robotjs");
 const clipboardy = require('clipboardy');
 const scriptText = require('./scriptText.js')
 
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); };
+
 const createAdbreaks = async (tabs) => {
     console.log("Creating adbreaks")
     //clipboardy.writeSync(`console.log('hello world')`)
