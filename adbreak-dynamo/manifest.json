@@ -5,17 +5,17 @@
     "content_scripts": [
          {
             "matches": ["https://studio.youtube.com/video/*/monetization/ads"],
-            "js": ["monetize.js"],
+            "js": ["./monetization/routines/monetize.js"],
             "run_at": "document_end"
          },
          {
             "matches": ["https://studio.youtube.com/channel/*/*"],
-            "js": ["entryPoint.js"],
+            "js": ["./monetization/entryPoint.js"],
             "run_at": "document_start"
          }
      ],
      "background": {
-        "scripts": ["background.js"]
+        "scripts": ["./background/index.js"]
      },
      "browser_action": {
          
