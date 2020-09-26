@@ -103,6 +103,9 @@ let navigateForward = async () => {
 }
 
 let openTabs = async () => {
+    console.log('Short Videos: ', sub10Counter)
+    console.log('Long Videos: ', plus10Counter)
+
     // open shorter length videos first
     let openCounter = 0
     for(let i = 0; i < sub10Counter; ++i){
