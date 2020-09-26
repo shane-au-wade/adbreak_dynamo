@@ -98,13 +98,14 @@ const checkBoxes = async () => {
 let initObserver = () => {
     let targetNode = document.querySelector('ytcp-app')
     console.log(targetNode)
-    let observerCallback = (mutations, observer) => {  
+    let observerCallback = async (mutations, observer) => {  
         // console.log('child added: ', mutations[mutations.length -1].target) 
         // console.log('whole node:', mutations[mutations.length -1])
         if(mutations[mutations.length -1].target.localName == 'iron-icon' && mutations[mutations.length -1].target.className == 'icon-right style-scope ytcp-anchor') {
             console.log('all elements loaded')
             observer.disconnect()
-            checkBoxes()
+            setTimeout(() => {document.location.reload(true)}, 60000*4) //4 minute timeout for all pages
+            setTimeout( () => {checkBoxes()} , 500)
         }
     }
     let observerConfig = {

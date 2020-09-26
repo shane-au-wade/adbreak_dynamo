@@ -7,7 +7,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let sendSkipHTTPRequest = () => {
+let sendSkipHTTPRequest = async () => {
     // let url = `http://localhost:3000/robot/skip`
     // fetch(url, {
     //     mode: 'no-cors', // no-cors, *cors, same-origin
@@ -72,7 +72,7 @@ const saveAndExit = async () => {
 
 const openNewPage = async () => {
     console.log('opening new page')
-    let index = await parseInt(localStorage.getItem('index'))
+    let index =  parseInt(localStorage.getItem('index'))
     let links = await JSON.parse(localStorage.getItem('links'))
     ++index
     localStorage.setItem('index', index)
@@ -98,6 +98,8 @@ const checkBoxes = async () => {
         await openNewPage()
         saveAndExit() 
     } else if(longVideo) {
+        // await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
+        // await sleep(1000)
         sendSkipHTTPRequest()
     } else {
         // < 8 minute video, save and close window
