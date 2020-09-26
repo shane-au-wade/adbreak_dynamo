@@ -1,5 +1,9 @@
 const createTimes =  
 `
+// let url = 'http://localhost:3000/robot/handshake'
+// fetch(url, {
+//     mode: 'no-cors', // no-cors, *cors, same-origin
+// });
 const createTimes = async (timeInterval) => { 
     function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }; 
     const clearAdbreaks = async () => {
@@ -33,12 +37,6 @@ const createTimes = async (timeInterval) => {
                 resolve(finalStr); } 
             }); 
         }; 
-
-        let url = 'http://localhost:3000/robot/handshake'
-        fetch(url, {
-            mode: 'no-cors', // no-cors, *cors, same-origin
-        });
-
         await clearAdbreaks()    
         let timeStamp = await document.querySelector('ytcp-thumbnail.thumbnail.video-thumbnail.style-scope.ytcp-navigation-drawer div div.timestamp.style-scope.ytcp-thumbnail div').innerText; 
         let adBreaksButton = await document.querySelector("#add-ad-break"); 

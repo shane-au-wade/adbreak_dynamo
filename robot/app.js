@@ -7,14 +7,6 @@ const routines = require('./routines')
 
 var tabResetTimeout
 
-const mouseConfig = require("./config/mouseConfig.json")
-const keyboardConfig = require("./config/keyboardConfig.json")
-
-console.log(mouseConfig)
-console.log(keyboardConfig)
-robot.setMouseDelay(mouseConfig.mouseDelay)
-robot.setKeyboardDelay(keyboardConfig.keyboardDeplay)
-
 app.get('/typevalue/:value', async (req, res) => {
 
     let str = await genFormattedString(req.params.value)
@@ -31,7 +23,7 @@ app.get('/typevalue/:value', async (req, res) => {
 
 app.get('/robot/createAdbreaks/:tab_count', async (req, res) => {
     routines.createAdbreaks(req.params.tab_count)
-    tabResetTimeout = setTimeout(routines.resetTab, 60000)
+    //tabResetTimeout = setTimeout(routines.resetTab, 60000)
     res.status(200).send(true)
 })
 

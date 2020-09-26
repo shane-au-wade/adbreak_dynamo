@@ -2,6 +2,15 @@ const robot = require("robotjs");
 const clipboardy = require('clipboardy');
 const scriptText = require('./scriptText.js')
 
+const mouseConfig = require("../config/mouseConfig.json")
+const keyboardConfig = require("../config/keyboardConfig.json")
+
+console.log(mouseConfig)
+console.log(keyboardConfig)
+robot.setMouseDelay(mouseConfig.mouseDelay)
+robot.setKeyboardDelay(keyboardConfig.keyboardDeplay)
+
+
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); };
 
 const createAdbreaks = async (tabs) => {
