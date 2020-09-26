@@ -4,6 +4,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+var tabResetTimeout
+
 const mouseConfig = require("./config/mouseConfig.json")
 const keyboardConfig = require("./config/keyboardConfig.json")
 console.log(mouseConfig)
@@ -28,7 +30,7 @@ app.get('/typevalue/:value', async (req, res) => {
 })
 
 const createAdbreaks = async (tabs) => {
-    console.log("Creating ad breaks")
+    console.log("Creating adbreaks")
     //clipboardy.writeSync(`console.log('hello world')`)
     clipboardy.writeSync(
     `
@@ -65,6 +67,12 @@ const createAdbreaks = async (tabs) => {
                     resolve(finalStr); } 
                 }); 
             }; 
+
+            let url = 'http://localhost:3000/robot/handshake'
+            fetch(url, {
+                mode: 'no-cors', // no-cors, *cors, same-origin
+            });
+
             await clearAdbreaks()    
             let timeStamp = await document.querySelector('ytcp-thumbnail.thumbnail.video-thumbnail.style-scope.ytcp-navigation-drawer div div.timestamp.style-scope.ytcp-thumbnail div').innerText; 
             let adBreaksButton = await document.querySelector("#add-ad-break"); 
@@ -132,7 +140,7 @@ const createAdbreaks = async (tabs) => {
             robot.keyTap('tab', 'control')
             await sleep(500)
             robot.keyTap('f12')
-            await sleep(1000)
+            await sleep(2500)
             robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
             robot.mouseClick()
             robot.keyTap('v', ['control','shift'])
@@ -180,8 +188,22 @@ const skipVideo = async () => {
     await sleep(1000)
 }
 
+const resetTab = async () => {
+    console.log('Reseting tab: handshake incomplete')
+    await sleep(500)
+    robot.moveMouse(mouseConfig.tabLocation.x, mouseConfig.tabLocation.y);
+    robot.mouseClick()
+    await sleep(500)
+    robot.keyTap('tab', 'control')
+    await sleep(500)
+    robot.keyTap('f12') // close the dev tools that were likely opened by the previous script
+    await sleep(500)
+    robot.keyTap('f5')
+}
+
 app.get('/robot/createAdbreaks/:tab_count', async (req, res) => {
     createAdbreaks(req.params.tab_count)
+    tabResetTimeout = setTimeout(resetTab, 60000)
     res.status(200).send(true)
 })
 
@@ -189,6 +211,13 @@ app.get('/robot/skip', async (req, res) => {
     skipVideo()
     res.status(200).send(true)
 })
+
+app.get('/robot/handshake', async (req, res) => {
+    console.log('handshake complete: adbreaks running')
+    clearTimeout(tabResetTimeout)
+    res.status(200).send(true)
+})
+
 
 app.listen(port, () => console.table({ port: `http://localhost:${port}` } ))
  
