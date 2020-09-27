@@ -16,6 +16,18 @@ app.post('/updateAdbreakTimeInterval/:time', async (req, res) => {
     res.status(200).send('ok');
 })
 
+app.get('/getAdbreakTimeInterval', async (req, res) => {
+    let time = await scriptText.getTimeInterval()
+    //console.log('retreiving time interval: ', time)
+    res.set('interval', time.toString())
+    res.status(200).send('ok');
+})
+
+app.get('/getAdbreakScriptText', async (req, res) => {
+    routines.copyCreateTimes()
+    res.status(200).send('ok');
+})
+
 app.post('/notify/start/:channel/:shortVideos/:longVideos', async (req, res) => {
     console.log(`channel: ${req.params.channel} | shortVideos: ${req.params.shortVideos} longVideos: ${req.params.longVideos}`)
     res.status(200).send('ok');

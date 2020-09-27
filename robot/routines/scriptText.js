@@ -6,6 +6,11 @@ let updateTimeInterval = (t) => {
     adbreakConfig.timeInterval = t
 }
 
+let getTimeInterval = async () => {
+    //console.log(adbreakConfig.timeInterval)
+    return adbreakConfig.timeInterval
+}
+
 let createTimes = async () => {
     return (
             `
@@ -132,4 +137,4 @@ let skipVideo = async () => {
 
 
 
-module.exports = {createTimes, skipVideo, updateTimeInterval}
+module.exports = {createTimes, skipVideo, updateTimeInterval, getTimeInterval}

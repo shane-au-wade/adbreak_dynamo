@@ -66,4 +66,8 @@ const resetTab = async () => {
     robot.keyTap('f5')
 }
 
-module.exports = {createAdbreaks, skipVideo, resetTab}
+const copyCreateTimes = async () => {
+    clipboardy.writeSync(await scriptText.createTimes())
+}
+
+module.exports = {createAdbreaks, skipVideo, resetTab, copyCreateTimes}
