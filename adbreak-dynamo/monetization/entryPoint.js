@@ -105,29 +105,53 @@ let navigateForward = async () => {
 let openTabs = async () => {
     console.log('Short Videos: ', sub10Counter)
     console.log('Long Videos: ', plus10Counter)
-
+    let title = await document.querySelector('#entity-name').innerText
+    
+    let url = `http://localhost:3000/notify/start/${title}/${sub10Counter}/${plus10Counter}`
+    fetch(url, {
+        method: 'post',
+        mode: 'no-cors', // no-cors, *cors, same-origin
+    });
     // open shorter length videos first
-    let openCounter = 0
-    for(let i = 0; i < sub10Counter; ++i){
+    url = `http://localhost:3000/notify/short-start/${title}`
+    fetch(url, {
+        method: 'post',
+        mode: 'no-cors', // no-cors, *cors, same-origin
+    });
+    //let openCounter = 0
+    let i = 0
+    while(i < sub10Counter) {
         let curLink = sessionStorage.getItem(i)
-        console.log(curLink)
+        //console.log(curLink)
         openCounter++
         window.open(curLink, '_blank')
-        if(openCounter === 1)
-        {
-            //console.log('sleeping')
-            openCounter = 0
-            await sleep(6500)
-        }
+        await sleep(6500)
+        ++i 
+        // if(openCounter === 1)
+        // {
+        //     //console.log('sleeping')
+        //     openCounter = 0
+        //     await sleep(6500)
+        // }
     }
-    console.log('<8 minute videos monetized')
-    
 
+    console.log('<8 minute videos monetized')
+    url = `http://localhost:3000/notify/short-end/${title}/${i}`
+    fetch(url, {
+        method: 'post',
+        mode: 'no-cors', // no-cors, *cors, same-origin
+    });
+    
     // begin 8+ minute video monetization routine
+    console.log('Starting 8+ minute video monetization')
+    url = `http://localhost:3000/notify/long-start/${title}/${i}`
+    fetch(url, {
+        method: 'post',
+        mode: 'no-cors', // no-cors, *cors, same-origin
+    });
     // localStorage.setItem('links', JSON.stringify(plus10MinVides))
     localStorage.setItem('index', 0)
     await sleep(1000) // let local storage code execute
-    console.log('Starting 8+ minute video monetization')
     window.open(localStorage.getItem(0))
 }
 

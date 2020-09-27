@@ -14,8 +14,7 @@ robot.setKeyboardDelay(keyboardConfig.keyboardDeplay)
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); };
 
 const createAdbreaks = async (tabs) => {
-    console.log("Creating adbreaks")
-    //clipboardy.writeSync(`console.log('hello world')`)
+    //console.log("Creating adbreaks")
     clipboardy.writeSync(await scriptText.createTimes())
     await sleep(500)
     robot.moveMouse(mouseConfig.tabLocation.x, mouseConfig.tabLocation.y);
@@ -36,8 +35,7 @@ const createAdbreaks = async (tabs) => {
 }
 
 const skipVideo = async () => {
-    console.log("Skipping bad video")
-    //clipboardy.writeSync(`console.log('hello world')`)
+    //console.log("Skipping bad video")
     clipboardy.writeSync(await scriptText.skipVideo())
     await sleep(500)
     robot.moveMouse(mouseConfig.tabLocation.x, mouseConfig.tabLocation.y);

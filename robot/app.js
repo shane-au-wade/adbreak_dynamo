@@ -16,6 +16,31 @@ app.post('/updateAdbreakTimeInterval/:time', async (req, res) => {
     res.status(200).send('ok');
 })
 
+app.post('/notify/start/:channel/:shortVideos/:longVideos', async (req, res) => {
+    console.log(`channel: ${req.params.channel} | shortVideos: ${req.params.shortVideos} longVideos: ${req.params.longVideos}`)
+    res.status(200).send('ok');
+})
+
+app.post('/notify/short-start/:channel', async (req, res) => {
+    console.log(`channel: ${req.params.channel} | monetizing short videos`)
+    res.status(200).send('ok');
+})
+
+app.post('/notify/short-end/:channel/:index', async (req, res) => {
+    console.log(`channel: ${req.params.channel} | short videos completed: ${req.params.index}`)
+    res.status(200).send('ok');
+})
+
+app.post('/notify/long-start/:channel', async (req, res) => {
+    console.log(`channel: ${req.params.channel} | monetizing long videos`)
+    res.status(200).send('ok');
+})
+
+app.post('/notify/long-end/:channel/:index', async (req, res) => {
+    console.log(`channel: ${req.params.channel} | long videos completed: ${req.params.index}`)
+    res.status(200).send('ok');
+})
+
 app.get('/robot/createAdbreaks/:tab_count', async (req, res) => {
     routines.createAdbreaks(req.params.tab_count)
     res.status(200).send(true)
