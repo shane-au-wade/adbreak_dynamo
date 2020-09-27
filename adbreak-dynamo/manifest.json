@@ -26,6 +26,6 @@
          
      },
      "permissions": [
-      "tabs", "https://studio.youtube.com/s/e95c104c/creator_studio_mod_binary_core_v2.js", "http://localhost:3000/hello","http://localhost:3000/click", "http://localhost:3000/typevalue/*", "http://localhost:3000/robot/createAdbreaks/*"
+      "tabs", "storage", "https://studio.youtube.com/s/e95c104c/creator_studio_mod_binary_core_v2.js", "http://localhost:3000/hello","http://localhost:3000/click", "http://localhost:3000/typevalue/*", "http://localhost:3000/robot/createAdbreaks/*"
    ]
 }
