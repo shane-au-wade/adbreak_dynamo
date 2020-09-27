@@ -298,5 +298,9 @@ chrome.storage.local.get(['routine'], function(result) {
     else if(result.routine === 'noAdbreaks') {
         console.log('running noAdbreaks routine')
         noAdbreaksRoutine()
+    } else {
+        //default case to run general routine
+        console.log('running general routine')
+        generalRoutine()
     }
   });
