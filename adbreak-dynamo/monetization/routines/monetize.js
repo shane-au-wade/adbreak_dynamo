@@ -1,4 +1,4 @@
-let main = () {
+let main = () => {
 /**
  * phase 2: check the boxes on each page to ensure that ads are turned on
  */
