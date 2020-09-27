@@ -144,7 +144,7 @@ let openTabs = async () => {
     
     // begin 8+ minute video monetization routine
     console.log('Starting 8+ minute video monetization')
-    url = `http://localhost:3000/notify/long-start/${title}/${i}`
+    url = `http://localhost:3000/notify/long-start/${title}`
     fetch(url, {
         method: 'post',
         mode: 'no-cors', // no-cors, *cors, same-origin
