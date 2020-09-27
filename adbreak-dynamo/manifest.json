@@ -15,7 +15,7 @@
          },
          {
             "matches": ["https://studio.youtube.com/video/*/monetization/null"],
-            "js": ["./monetization/endpoint.js"],
+            "js": ["./monetization/endPoint.js"],
             "run_at": "document_start"
          }
      ],
