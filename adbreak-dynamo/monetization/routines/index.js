@@ -2,7 +2,7 @@
 console.log('Initializing Monetization Routines')
 
 
-console.log(generalRoutine)
+
 
 
 /**
@@ -282,3 +282,9 @@ let noAdbreaksRoutine = () => {
     
 } // end of main function
     
+
+/**
+ * main code to execute a specific routine
+ */
+
+console.log(generalRoutine)
