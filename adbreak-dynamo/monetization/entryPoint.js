@@ -123,7 +123,7 @@ let openTabs = async () => {
     while(i < sub10Counter) {
         let curLink = sessionStorage.getItem(i)
         //console.log(curLink)
-        openCounter++
+        //openCounter++
         window.open(curLink, '_blank')
         await sleep(6500)
         ++i 
