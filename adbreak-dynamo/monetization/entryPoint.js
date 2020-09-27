@@ -114,11 +114,6 @@ let openTabs = async () => {
         mode: 'no-cors', // no-cors, *cors, same-origin
     });
     // open shorter length videos first
-    url = `http://localhost:3000/notify/short-start/${title}`
-    fetch(url, {
-        method: 'post',
-        mode: 'no-cors', // no-cors, *cors, same-origin
-    });
     //let openCounter = 0
     let i = 0
     while(i < sub10Counter) {
@@ -144,12 +139,6 @@ let openTabs = async () => {
     });
     
     // begin 8+ minute video monetization routine
-    console.log('Starting 8+ minute video monetization')
-    url = `http://localhost:3000/notify/long-start/${title}`
-    fetch(url, {
-        method: 'post',
-        mode: 'no-cors', // no-cors, *cors, same-origin
-    });
     // localStorage.setItem('links', JSON.stringify(plus10MinVides))
     localStorage.setItem('index', 0)
     await sleep(1000) // let local storage code execute

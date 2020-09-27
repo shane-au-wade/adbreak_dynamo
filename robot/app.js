@@ -33,18 +33,8 @@ app.post('/notify/start/:channel/:shortVideos/:longVideos', async (req, res) => 
     res.status(200).send('ok');
 })
 
-app.post('/notify/short-start/:channel', async (req, res) => {
-    console.log(`channel: ${req.params.channel} | monetizing short videos`)
-    res.status(200).send('ok');
-})
-
 app.post('/notify/short-end/:channel/:index', async (req, res) => {
     console.log(`channel: ${req.params.channel} | short videos completed: ${req.params.index}`)
-    res.status(200).send('ok');
-})
-
-app.post('/notify/long-start/:channel', async (req, res) => {
-    console.log(`channel: ${req.params.channel} | monetizing long videos`)
     res.status(200).send('ok');
 })
 
