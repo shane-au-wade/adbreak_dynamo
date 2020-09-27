@@ -1,0 +1,84 @@
+.title {
+    color: #f75050;;
+    width: 280px;
+}
+
+html {
+    height: 0px;
+}
+
+body {
+    padding: 10px;
+}
+
+#routineGUI {
+    padding: 5px;
+    background-color: #f57575;
+    border-radius: 5px;
+}
+
+#intervalGUI {
+    padding: 5px;
+    background-color: #f57575;
+    border-radius: 5px;
+}
+
+.configRow {
+    display: inline;
+}
+
+.configTile {
+    background-color: #d8d8d8;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.copyContainer {
+    background-color: #d8d8d8;
+    border-radius: 10px;
+    padding: 5px;
+    width: fit-content;
+}
+
+.copyImg {
+    height: 20px;
+}
+
+.copyText {
+    display: inline;
+    position: relative;
+    bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.copyBtn {
+    background-color: transparent;
+    padding: 3px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: none;
+}
+
+button {
+    border-radius: 5px;
+    padding: 3px;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+button:hover {
+    background-color: #f57575;
+    cursor: pointer;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+button {
+   outline: none;
+}
+

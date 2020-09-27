@@ -1,14 +1,13 @@
 
 console.log('Initializing Monetization Routines')
 
-
-
-
-
 /**
  * below are monetization routine functions
  */
 
+ /**
+  * run the general monetization routine
+  */
 let generalRoutine = () => {
     /**
      * phase 2: check the boxes on each page to ensure that ads are turned on
@@ -140,6 +139,10 @@ let generalRoutine = () => {
     
 } // end of main function
 
+
+/**
+ * run the no adbreaks monetization routine
+ */
 let noAdbreaksRoutine = () => {
     /**
      * phase 2: check the boxes on each page to ensure that ads are turned on
@@ -286,11 +289,14 @@ let noAdbreaksRoutine = () => {
 /**
  * main code to execute a specific routine
  */
-
 chrome.storage.local.get(['routine'], function(result) {
     console.log(result);
     if(result.routine === 'general') {
         console.log('running general routine')
         generalRoutine()
+    } 
+    else if(result.routine === 'noAdbreaks') {
+        console.log('running noAdbreaks routine')
+        noAdbreaksRoutine()
     }
   });
