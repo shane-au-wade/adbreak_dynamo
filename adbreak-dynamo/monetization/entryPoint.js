@@ -106,6 +106,7 @@ let openTabs = async () => {
     console.log('Short Videos: ', sub10Counter)
     console.log('Long Videos: ', plus10Counter)
     let title = await document.querySelector('#entity-name').innerText
+    localStorage.setItem('channel', title)
     
     let url = `http://localhost:3000/notify/start/${title}/${sub10Counter}/${plus10Counter}`
     fetch(url, {

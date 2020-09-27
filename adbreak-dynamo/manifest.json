@@ -12,6 +12,11 @@
             "matches": ["https://studio.youtube.com/channel/*/*"],
             "js": ["./monetization/entryPoint.js"],
             "run_at": "document_start"
+         },
+         {
+            "matches": ["https://studio.youtube.com/video/*/monetization/null"],
+            "js": ["./monetization/endpoint.js"],
+            "run_at": "document_start"
          }
      ],
      "background": {

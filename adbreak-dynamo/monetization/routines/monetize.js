@@ -104,8 +104,8 @@ let initObserver = () => {
         if(mutations[mutations.length -1].target.localName == 'iron-icon' && mutations[mutations.length -1].target.className == 'icon-right style-scope ytcp-anchor') {
             console.log('all elements loaded')
             observer.disconnect()
-            setTimeout(() => {document.location.reload(true)}, 60000*4) //4 minute timeout for all pages
-            setTimeout( () => {checkBoxes()} , 500)
+            setTimeout(() => {document.location.reload()}, 60000*4) //4 minute timeout for all pages
+            checkBoxes()
         }
     }
     let observerConfig = {
