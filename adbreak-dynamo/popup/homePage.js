@@ -15,10 +15,17 @@ let getConfig = async () => {
     config.routine = result.routine
   });
 
-  let res = await fetch(`http://localhost:3000/getAdbreakTimeInterval`, {
-      method: 'get',
-  });
-  config.interval = res.headers.get('interval')
+ 
+  try {
+      let res = await fetch(`http://localhost:3000/getAdbreakTimeInterval`, {
+        method: 'get',
+      });
+      config.interval = res.headers.get('interval')
+  } catch (error) {
+      console.log('server is not running')
+      config.interval = '\n\n\nWARNING: Server is not running'
+  }
+
   console.log('config: ', config)
   return true
 }
