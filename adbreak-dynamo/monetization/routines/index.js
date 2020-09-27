@@ -287,4 +287,10 @@ let noAdbreaksRoutine = () => {
  * main code to execute a specific routine
  */
 
-console.log(generalRoutine)
+chrome.storage.local.get(['routine'], function(result) {
+    console.log(result);
+    if(result.routine === 'general') {
+        console.log('running general routine')
+        generalRoutine()
+    }
+  });
