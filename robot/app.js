@@ -1,8 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const port = 3000
 const routines = require('./routines')
 const scriptText = require('./routines/scriptText.js')
+const telegram = require('./telegram')
 
 app.use(express.static("public"));
 
@@ -30,16 +32,19 @@ app.get('/getAdbreakScriptText', async (req, res) => {
 
 app.post('/notify/start/:channel/:shortVideos/:longVideos', async (req, res) => {
     console.log(`channel: ${req.params.channel} | shortVideos: ${req.params.shortVideos} longVideos: ${req.params.longVideos}`)
+    telegram.sendStartMessage(req.params)
     res.status(200).send('ok');
 })
 
 app.post('/notify/short-end/:channel/:index', async (req, res) => {
     console.log(`channel: ${req.params.channel} | short videos completed: ${req.params.index}`)
+    telegram.sendEndShortMessage(req.params)
     res.status(200).send('ok');
 })
 
 app.post('/notify/long-end/:channel/:index', async (req, res) => {
     console.log(`channel: ${req.params.channel} | long videos completed: ${req.params.index}`)
+    telegram.sendEndLongMessage(req.params)
     res.status(200).send('ok');
 })
 
