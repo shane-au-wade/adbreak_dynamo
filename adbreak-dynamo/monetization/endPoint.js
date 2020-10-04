@@ -13,6 +13,7 @@ document.addEventListener('readystatechange', (event) => {
     if(document.readyState === 'complete')
     {
         setTimeout( () => {
+            document.querySelector("p#error-message").innerText = "Monetization Complete"
             sendStopHttpRequest()
         }, 1000)
     }
