@@ -144,31 +144,16 @@ let generalRoutine = () => {
  * run the no adbreaks monetization routine
  */
 let noAdbreaksRoutine = () => {
-    /**
+   
+        /**
      * phase 2: check the boxes on each page to ensure that ads are turned on
      */
     console.log('check boxes script loaded')
-    
+
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    
-    let sendSkipHTTPRequest = async () => {
-        // let url = `http://localhost:3000/robot/skip`
-        // fetch(url, {
-        //     mode: 'no-cors', // no-cors, *cors, same-origin
-        // });
-        let index = await parseInt(localStorage.getItem('index'))
-        let links = await JSON.parse(localStorage.getItem('links'))
-        await sleep(500)
-        ++index
-        localStorage.setItem('index', index)
-        await sleep(500)
-        window.open(links[index])
-        await sleep(500)
-        open(location, "_self").close();
-    }
-    
+
     const clickUncheckedEnabledBoxes = async () => {
         let uncheckedAdType = document.querySelectorAll('ytcp-checkbox-lit[aria-checked="false"][aria-disabled="false"')
         while(uncheckedAdType.length != 0) {
@@ -180,19 +165,19 @@ let noAdbreaksRoutine = () => {
         }
         return true
     }
-    
-    const disableMidrollAds = async () => {
-        let uncheckedAdType = document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings[aria-checked='true']")
-        while(uncheckedAdType.length != 0) {
-            for(let i = 0; i < uncheckedAdType.length; ++i) {
-                uncheckedAdType[i].click()
-                await sleep(30)
-            }
-            uncheckedAdType = document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings[aria-checked='true']")
-        }
-        return true
-    }
-    
+
+    // const disableMidrollAds = async () => {
+    //     let uncheckedAdType = document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings[aria-checked='true']")
+    //     while(uncheckedAdType.length != 0) {
+    //         for(let i = 0; i < uncheckedAdType.length; ++i) {
+    //             uncheckedAdType[i].click()
+    //             await sleep(30)
+    //         }
+    //         uncheckedAdType = document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings[aria-checked='true']")
+    //     }
+    //     return true
+    // }
+
     const isVideoLong = async () => {
         let timeStamp = await document.querySelector('ytcp-thumbnail.thumbnail.video-thumbnail.style-scope.ytcp-navigation-drawer div div.timestamp.style-scope.ytcp-thumbnail div').innerText
         let timeArr = timeStamp.split(':')
@@ -203,7 +188,7 @@ let noAdbreaksRoutine = () => {
             return false
         }
     }
-    
+
     const saveAndExit = async () => {
         console.log('save and close')
         let saveButton = document.querySelector("ytcp-button#save")
@@ -215,19 +200,21 @@ let noAdbreaksRoutine = () => {
             open(location, '_self').close();
         }
     }
-    
+
     const openNewPage = async () => {
         console.log('opening new page')
-        let index =  parseInt(localStorage.getItem('index'))
-        let links = await JSON.parse(localStorage.getItem('links'))
+        let index = await parseInt(localStorage.getItem('index'))
+        //let links = await JSON.parse(await localStorage.getItem('links'))
         ++index
+        let link = localStorage.getItem(index)
+        await sleep(500)
         localStorage.setItem('index', index)
         await sleep(500)
-        window.open(links[index])
+        window.open(link)
         await sleep(500)
         return true
     }
-    
+
     const checkBoxes = async () => {
         // check all ad type boxes
         await clickUncheckedEnabledBoxes()
@@ -239,20 +226,27 @@ let noAdbreaksRoutine = () => {
             //8+ minute video
             await clickUncheckedEnabledBoxes()
             await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
+            if(!(document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").ariaChecked === 'false')) {
+                await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
+            }
             await sleep(1000)
             // write logic to update the index of page and open the new page
             await openNewPage()
             saveAndExit() 
         } else if(longVideo) {
-            // await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
-            // await sleep(1000)
-            sendSkipHTTPRequest()
+            await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
+            if(!(document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").ariaChecked === 'false')) {
+                await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
+            }
+            await sleep(1000)
+            await openNewPage()
+            saveAndExit() 
         } else {
             // < 8 minute video, save and close window
             saveAndExit()
         }
     }
-    
+
     let initObserver = () => {
         let targetNode = document.querySelector('ytcp-app')
         console.log(targetNode)
@@ -272,13 +266,13 @@ let noAdbreaksRoutine = () => {
         const observer = new MutationObserver( observerCallback )
         observer.observe(targetNode, observerConfig)
     }
-    
+
     document.addEventListener('readystatechange', (event) => {
         //console.log(`readystate: ${document.readyState}\n`);
         if(document.readyState === 'complete')
         {
             setTimeout( () => {
-               initObserver()
+            initObserver()
             }, 1000)
         }
     });
