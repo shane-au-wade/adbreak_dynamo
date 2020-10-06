@@ -104,9 +104,9 @@ let createTimes = async () => {
                         await sleep(800)
                         console.log('Opening Link: ', link)
                         let w = window.open("", '_blank')
-                        await sleep(800)
+                        await sleep(500)
                         w.location = link
-                        await sleep(800)
+                        await sleep(500)
                         open(location, "_self").close(); 
                     }; 
             createTimes(${adbreakConfig.timeInterval});
