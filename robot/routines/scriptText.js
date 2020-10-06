@@ -103,7 +103,9 @@ let createTimes = async () => {
                         localStorage.setItem('index', index)
                         await sleep(800)
                         console.log('Opening Link: ', link)
-                        await window.open(link)
+                        let w = window.open("", '_blank')
+                        await sleep(800)
+                        w.location = link
                         await sleep(800)
                         open(location, "_self").close(); 
                     }; 
