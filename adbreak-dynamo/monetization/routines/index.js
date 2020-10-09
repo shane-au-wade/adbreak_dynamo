@@ -94,7 +94,7 @@ let generalRoutine = () => {
         await sleep(250)
         w.location = link
         await sleep(750)
-        open(location, "_self").close(); 
+       // open(location, "_self").close(); 
     }
     
     const checkBoxes = async () => {
