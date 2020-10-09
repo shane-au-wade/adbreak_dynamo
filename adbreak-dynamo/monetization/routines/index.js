@@ -77,6 +77,23 @@ let generalRoutine = () => {
     }
 
     /**
+     * open the first long video to start the long video
+     * monetization routine
+     */
+
+    const longVideoStartRoutine = async () => {
+        // console.log('<8 minute videos monetized')
+        let title = localStorage.getItem('channel')
+        url = `http://localhost:3000/notify/short-end/${title}/${index}`
+        fetch(url, {
+            method: 'post',
+            mode: 'no-cors', // no-cors, *cors, same-origin
+        });
+        // Long video monetization routine entrypoint
+        window.open(localStorage.getItem(0), '_blank')
+    }
+
+    /**
      * open the next video and close out the current one
      */
 
@@ -85,16 +102,19 @@ let generalRoutine = () => {
         ++index
         let link = sessionStorage.getItem(index)
         if(link === null) {
-            console.log('the link is null: time to open the long videos')
+            //console.log('the link is null: time to open the long videos')
+            longVideoStartRoutine()
+        } else {
+            await sleep(800)
+            sessionStorage.setItem('index', index)
+            console.log('Opening Link: ', link)
+            let w = window.open("", '_blank')
+            await sleep(250)
+            w.location = link
+            await sleep(750)
+            open(location, "_self").close(); 
         }
-        await sleep(800)
-        sessionStorage.setItem('index', index)
-        console.log('Opening Link: ', link)
-        let w = window.open("", '_blank')
-        await sleep(250)
-        w.location = link
-        await sleep(750)
-       // open(location, "_self").close(); 
+       
     }
     
     const checkBoxes = async () => {
