@@ -235,15 +235,60 @@ let noAdbreaksRoutine = () => {
         }
     }
 
+    /**
+     * open the first long video to start the long video
+     * monetization routine
+     */
+
+    const longVideoStartRoutine = async (index) => {
+        // console.log('<8 minute videos monetized')
+        let title = localStorage.getItem('channel')
+        let link = localStorage.getItem(0)
+        url = `http://localhost:3000/notify/short-end/${title}/${index}`
+        fetch(url, {
+            method: 'post',
+            mode: 'no-cors', // no-cors, *cors, same-origin
+        });
+        // Long video monetization routine entrypoint
+        let w = window.open("", '_blank')
+        await sleep(250)
+        w.location = link
+        await sleep(750)
+        open(location, "_self").close(); 
+    }
+
+
+    /**
+     * open the next video and close out the current one
+     */
+
+    const shortVideoClosingRoutine = async () => {
+        let index = await parseInt(sessionStorage.getItem('index'))
+        ++index
+        let link = sessionStorage.getItem(index)
+        if(link === null) {
+            //console.log('the link is null: time to open the long videos')
+            longVideoStartRoutine(index)
+        } else {
+            await sleep(800)
+            sessionStorage.setItem('index', index)
+            console.log('Opening Link: ', link)
+            let w = window.open("", '_blank')
+            await sleep(250)
+            w.location = link
+            await sleep(750)
+            open(location, "_self").close(); 
+        }
+    }
+
     const saveAndExit = async () => {
         console.log('save and close')
         let saveButton = document.querySelector("ytcp-button#save")
         if(saveButton.ariaDisabled === 'true') {
-            open(location, '_self').close();
+            shortVideoClosingRoutine()
         } else {
             saveButton.click()
-            await sleep(2000)
-            open(location, '_self').close();
+            shortVideoClosingRoutine()
         }
     }
 
