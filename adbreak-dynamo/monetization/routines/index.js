@@ -84,13 +84,18 @@ let generalRoutine = () => {
     const longVideoStartRoutine = async (index) => {
         // console.log('<8 minute videos monetized')
         let title = localStorage.getItem('channel')
+        let link = localStorage.getItem(0)
         url = `http://localhost:3000/notify/short-end/${title}/${index}`
         fetch(url, {
             method: 'post',
             mode: 'no-cors', // no-cors, *cors, same-origin
         });
         // Long video monetization routine entrypoint
-        window.open(localStorage.getItem(0), '_blank')
+        let w = window.open("", '_blank')
+        await sleep(250)
+        w.location = link
+        await sleep(750)
+        open(location, "_self").close(); 
     }
 
     /**
