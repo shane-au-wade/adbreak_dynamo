@@ -75,6 +75,27 @@ let generalRoutine = () => {
         }
         
     }
+
+    /**
+     * open the next video and close out the current one
+     */
+
+    const shortVideoClosingRoutine = async () => {
+        let index = await parseInt(sessionStorage.getItem('index'))
+        ++index
+        let link = sessionStorage.getItem(index)
+        if(link === null) {
+            console.log('the link is null: time to open the long videos')
+        }
+        await sleep(800)
+        sessionStorage.setItem('index', index)
+        console.log('Opening Link: ', link)
+        let w = window.open("", '_blank')
+        await sleep(250)
+        w.location = link
+        await sleep(750)
+        open(location, "_self").close(); 
+    }
     
     const checkBoxes = async () => {
         // check all ad type boxes
@@ -84,23 +105,23 @@ let generalRoutine = () => {
         // check if the 'during video' box is disabled
         let midRollBoxDisabled = await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").ariaDisabled
         if(midRollBoxDisabled === 'false') {
-            //8+ minute video
+            // long video with midrolls enabled
             await clickUncheckedEnabledBoxes()
             await document.querySelector('#place-manually-button').click() // open adbreak menu
             await sleep(2000)
             clearAdbreaks() // clear out existing adbreaks
         } else if(longVideo) {
+            // long video with midrolls disabled
             sendSkipHTTPRequest()
         } else {
-            // < 8 minute video, save and close window
+            // short video | save and close window
             console.log('save and close')
             let saveButton = document.querySelector("ytcp-button#save")
             if(saveButton.ariaDisabled === 'true') {
-                open(location, '_self').close();
+                shortVideoClosingRoutine()
             } else {
                 saveButton.click()
-                await sleep(2000)
-                open(location, '_self').close();
+                shortVideoClosingRoutine()
             }
             
         }

@@ -107,42 +107,51 @@ let openTabs = async () => {
     console.log('Long Videos: ', plus10Counter)
     let title = await document.querySelector('#entity-name').innerText
     localStorage.setItem('channel', title)
+    localStorage.setItem('index', 0) // long video index
+    sessionStorage.setItem('index', 0) // short video index
     
     let url = `http://localhost:3000/notify/start/${title}/${sub10Counter}/${plus10Counter}`
     fetch(url, {
         method: 'post',
         mode: 'no-cors', // no-cors, *cors, same-origin
     });
+
+    await sleep(1000) // let local storage code execute
+    // this is the entry point into the long 
+    // link of videos
+    window.open(sessionStorage.getItem(0), '_blank') 
+
+
     // open shorter length videos first
     //let openCounter = 0
-    let i = 0
-    while(i < sub10Counter) {
-        let curLink = sessionStorage.getItem(i)
-        //console.log(curLink)
-        //openCounter++
-        window.open(curLink, '_blank')
-        await sleep(6500)
-        ++i 
-        // if(openCounter === 1)
-        // {
-        //     //console.log('sleeping')
-        //     openCounter = 0
-        //     await sleep(6500)
-        // }
-    }
+    // let i = 0
+    // while(i < sub10Counter) {
+    //     let curLink = sessionStorage.getItem(i)
+    //     //console.log(curLink)
+    //     //openCounter++
+    //     window.open(curLink, '_blank')
+    //     await sleep(6500)
+    //     ++i 
+    //     // if(openCounter === 1)
+    //     // {
+    //     //     //console.log('sleeping')
+    //     //     openCounter = 0
+    //     //     await sleep(6500)
+    //     // }
+    // }
 
-    console.log('<8 minute videos monetized')
-    url = `http://localhost:3000/notify/short-end/${title}/${i}`
-    fetch(url, {
-        method: 'post',
-        mode: 'no-cors', // no-cors, *cors, same-origin
-    });
+    // console.log('<8 minute videos monetized')
+    // url = `http://localhost:3000/notify/short-end/${title}/${i}`
+    // fetch(url, {
+    //     method: 'post',
+    //     mode: 'no-cors', // no-cors, *cors, same-origin
+    // });
     
-    // begin 8+ minute video monetization routine
-    // localStorage.setItem('links', JSON.stringify(plus10MinVides))
-    localStorage.setItem('index', 0)
-    await sleep(1000) // let local storage code execute
-    window.open(localStorage.getItem(0))
+    // // begin 8+ minute video monetization routine
+    // // localStorage.setItem('links', JSON.stringify(plus10MinVides))
+    
+    
+    // window.open(localStorage.getItem(0))
 }
 
 let mainLoop = async () => {
