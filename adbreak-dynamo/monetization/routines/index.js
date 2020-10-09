@@ -81,7 +81,7 @@ let generalRoutine = () => {
      * monetization routine
      */
 
-    const longVideoStartRoutine = async () => {
+    const longVideoStartRoutine = async (index) => {
         // console.log('<8 minute videos monetized')
         let title = localStorage.getItem('channel')
         url = `http://localhost:3000/notify/short-end/${title}/${index}`
@@ -103,7 +103,7 @@ let generalRoutine = () => {
         let link = sessionStorage.getItem(index)
         if(link === null) {
             //console.log('the link is null: time to open the long videos')
-            longVideoStartRoutine()
+            longVideoStartRoutine(index)
         } else {
             await sleep(800)
             sessionStorage.setItem('index', index)
