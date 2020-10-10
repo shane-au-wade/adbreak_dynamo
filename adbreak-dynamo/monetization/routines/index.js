@@ -293,17 +293,21 @@ let noAdbreaksRoutine = () => {
     }
 
     const openNewPage = async () => {
-        console.log('opening new page')
+        console.log('save')
+        let saveButton = document.querySelector("ytcp-button#save")
+        if(saveButton.ariaDisabled !== 'true') {
+            shortVideoClosingRoutine()
+            saveButton.click()
+        } 
         let index = await parseInt(localStorage.getItem('index'))
-        //let links = await JSON.parse(await localStorage.getItem('links'))
         ++index
         let link = localStorage.getItem(index)
-        await sleep(500)
+        await sleep(800)
         localStorage.setItem('index', index)
-        await sleep(500)
+        await sleep(250)
         window.open(link)
-        await sleep(500)
-        return true
+        await sleep(750)
+        open(location, "_self").close(); 
     }
 
     const checkBoxes = async () => {
@@ -322,16 +326,14 @@ let noAdbreaksRoutine = () => {
             }
             await sleep(1000)
             // write logic to update the index of page and open the new page
-            await openNewPage()
-            saveAndExit() 
+            openNewPage()
         } else if(longVideo) {
             await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
             if(!(document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").ariaChecked === 'false')) {
                 await document.querySelector("ytcp-checkbox-lit.midroll-ad-break.style-scope.ytpp-ad-breaks-settings").click()
             }
             await sleep(1000)
-            await openNewPage()
-            saveAndExit() 
+            openNewPage()
         } else {
             // < 8 minute video, save and close window
             saveAndExit()
