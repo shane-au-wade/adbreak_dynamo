@@ -296,7 +296,6 @@ let noAdbreaksRoutine = () => {
         console.log('save')
         let saveButton = document.querySelector("ytcp-button#save")
         if(saveButton.ariaDisabled !== 'true') {
-            shortVideoClosingRoutine()
             saveButton.click()
         } 
         let index = await parseInt(localStorage.getItem('index'))
