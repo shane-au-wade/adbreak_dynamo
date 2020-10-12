@@ -1,4 +1,6 @@
 const axios = require('axios')
+const hourlyRate = 20.0
+
 
 let sendGeneralMessage = async (channel_ID, text) => {
     //console.log('sending general message')
@@ -17,11 +19,13 @@ let sendGeneralMessage = async (channel_ID, text) => {
 
 let sendStartMessage = async (params) => {
     //console.log('sending start message')
+    let hours = (parseInt(params.shortVideos) + parseInt(params.longVideos))/60
+    let cashValue = hours * hourlyRate 
     try {
         let response = await axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,{} , {
         params: {
             chat_id: process.env.CHAT_ID,
-            text: `Now Monetizing 💸 ${params.channel} | Short Videos: ${params.shortVideos}, Long Videos: ${params.longVideos}`
+            text: `Now Monetizing 💸 ${params.channel} | Short Videos: ${params.shortVideos}, Long Videos: ${params.longVideos}\nWorth 💵 $${cashValue.toFixed(2)} `
          }
         })
     } catch (error) {
