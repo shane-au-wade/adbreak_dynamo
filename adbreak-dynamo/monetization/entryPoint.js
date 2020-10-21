@@ -59,7 +59,7 @@ let collectPageLinks = async () => {
     // let plus10MinVides = []
    
         for(let i = 0; i < elems.length; ++i){
-            if(elems[i].children[3].href && (elems[i].children[3].href.indexOf('monetization')>= 0)) { // the monitization link exisits
+            if(elems[i].children[3].href != undefined && (elems[i].children[3].href.indexOf('monetization')>= 0)) { // the monitization link exisits
                     let time = timeStamps[i].innerText
                     let timeArr = time.split(":")
                     if(timeArr.length >= 3)
