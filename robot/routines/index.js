@@ -44,9 +44,10 @@ const skipVideo = async () => {
     robot.keyTap('tab', 'control')
     await sleep(500)
     robot.keyTap('f12')
-    await sleep(1000)
+    await sleep(2000)
     robot.moveMouse(mouseConfig.consoleLocation.x, mouseConfig.consoleLocation.y);
     robot.mouseClick()
+    await sleep(250)
     robot.keyTap('v', ['control','shift'])
     await sleep(500)
     robot.keyTap('enter')

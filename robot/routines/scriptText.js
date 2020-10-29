@@ -127,8 +127,10 @@ let skipVideo = async () => {
                     let link = localStorage.getItem(index)
                     await sleep(500)
                     localStorage.setItem('index', index)
+                    console.log('Opening Link: ', link)
+                    let w = window.open("", '_blank')
                     await sleep(500)
-                    window.open(link)
+                    w.location = link
                     await sleep(500)
                     open(location, "_self").close(); 
                 }; 
