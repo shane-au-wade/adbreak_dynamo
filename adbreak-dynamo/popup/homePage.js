@@ -17,7 +17,7 @@ let getConfig = async () => {
 
  
   try {
-      let res = await fetch(`http://localhost:3000/getAdbreakTimeInterval`, {
+      let res = await fetch(`http://localhost:3000/config/getAdbreakTimeInterval`, {
         method: 'get',
       });
       config.interval = res.headers.get('interval')
@@ -48,7 +48,7 @@ let handleTimeIntervalUpdate = () => {
     let value = form.timeInterval.value
     console.log('Time interval update: ', value)
     if(value !== '') {
-        let url = `http://localhost:3000/updateAdbreakTimeInterval/${form.timeInterval.value}`
+        let url = `http://localhost:3000/config/updateAdbreakTimeInterval/${form.timeInterval.value}`
         fetch(url, {
             method: 'post',
         });
@@ -78,7 +78,7 @@ document.querySelector('button#updateRoutine').addEventListener('click', () => {
 
 
 let handleCodeCopy = () => {
-  let url = `http://localhost:3000/getAdbreakScriptText`
+  let url = `http://localhost:3000/config/getAdbreakScriptText`
         fetch(url, {
             method: 'get',
         });
