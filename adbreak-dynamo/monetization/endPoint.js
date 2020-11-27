@@ -6,6 +6,14 @@ let sendStopHttpRequest = async () => {
         method: 'post',
         mode: 'no-cors', // no-cors, *cors, same-origin
     });
+    return true
+}
+
+let clearWatchdog = () => {
+    let url = `http://localhost:3000/watchdog/clearTimer`
+    fetch(url, {
+        mode: 'no-cors', // no-cors, *cors, same-origin
+    });
 }
 
 document.addEventListener('readystatechange', (event) => {
@@ -14,7 +22,8 @@ document.addEventListener('readystatechange', (event) => {
     {
         setTimeout( () => {
             document.querySelector("p#error-message").innerText = "Monetization Complete"
-            sendStopHttpRequest()
+            await sendStopHttpRequest()
+            await clearWatchdog()
         }, 1000)
     }
 });

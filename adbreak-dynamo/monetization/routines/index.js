@@ -31,6 +31,14 @@ let generalRoutine = () => {
             mode: 'no-cors', // no-cors, *cors, same-origin
         });
     }
+
+    let updateWatchdog = async () => {
+        let url = `http://localhost:3000/watchdog/updateTimer/180000`
+        fetch(url, {
+            mode: 'no-cors', // no-cors, *cors, same-origin
+        });
+        return true
+    }
     
     const clearAdbreaks = async () => {
         let adbreakRows = document.querySelectorAll('div.ad-break-row.style-scope.ytve-ad-breaks-editor-options-panel')
@@ -106,10 +114,12 @@ let generalRoutine = () => {
         let index = await parseInt(sessionStorage.getItem('index'))
         ++index
         let link = sessionStorage.getItem(index)
+        await sleep(500)
         if(link === null) {
             //console.log('the link is null: time to open the long videos')
             longVideoStartRoutine(index)
         } else {
+            await updateWatchdog()
             await sleep(800)
             sessionStorage.setItem('index', index)
             console.log('Opening Link: ', link)
@@ -118,8 +128,7 @@ let generalRoutine = () => {
             w.location = link
             await sleep(750)
             open(location, "_self").close(); 
-        }
-       
+        }      
     }
     
     const checkBoxes = async () => {

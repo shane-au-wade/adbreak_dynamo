@@ -116,6 +116,13 @@ let openTabs = async () => {
         mode: 'no-cors', // no-cors, *cors, same-origin
     });
 
+    await sleep(500)
+    // start watchdog timer 
+    url = `http://localhost:3000/watchdog/startTimer/180000`
+    fetch(url, {
+        mode: 'no-cors', // no-cors, *cors, same-origin
+    });
+
     await sleep(1000) // let local storage code execute
     // this is the entry point into the long 
     // link of videos
