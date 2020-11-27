@@ -67,8 +67,21 @@ const resetTab = async () => {
     robot.keyTap('f5')
 }
 
+const refreshTab = async () => {
+    console.log('Reseting tab: handshake incomplete')
+    await sleep(500)
+    robot.moveMouse(mouseConfig.tabLocation.x, mouseConfig.tabLocation.y);
+    robot.mouseClick()
+    await sleep(750)
+    robot.keyTap('tab', 'control')
+    //await sleep(500)
+    //robot.keyTap('f12') // close the dev tools that were likely opened by the previous script
+    await sleep(750)
+    robot.keyTap('f5')
+}
+
 const copyCreateTimes = async () => {
     clipboardy.writeSync(await scriptText.createTimes())
 }
 
-module.exports = {createAdbreaks, skipVideo, resetTab, copyCreateTimes}
+module.exports = {createAdbreaks, skipVideo, resetTab, refreshTab, copyCreateTimes}

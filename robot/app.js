@@ -7,6 +7,7 @@ const port = 3000
 const configRouter = require('./routes/config');
 const notifyRouter = require('./routes/notify')
 const robotRouter = require('./routes/robot')
+const watchdogRouter = require('./routes/watchdog')
 
 // static folder serving
 app.use(express.static("public"));
@@ -18,11 +19,6 @@ global.__basedir = __dirname;
 app.use('/config', configRouter);
 app.use('/notify', notifyRouter);
 app.use('/robot', robotRouter)
+app.use('/watchdog', watchdogRouter)
 
 app.listen(port, () => console.table({ port: `http://localhost:${port}` } ))
- 
-
-
-
-
-
