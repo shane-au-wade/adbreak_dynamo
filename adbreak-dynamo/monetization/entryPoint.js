@@ -120,6 +120,7 @@ let openTabs = async () => {
     // start watchdog timer 
     url = `http://localhost:3000/watchdog/startTimer/180000`
     fetch(url, {
+        method: 'post',
         mode: 'no-cors', // no-cors, *cors, same-origin
     });
 

@@ -14,7 +14,7 @@
             "run_at": "document_start"
          },
          {
-            "matches": ["https://studio.youtube.com/video/*/monetization/null"],
+            "matches": ["https://studio.youtube.com/video/*/monetization/endpoint"],
             "js": ["./monetization/endPoint.js"],
             "run_at": "document_start"
          }

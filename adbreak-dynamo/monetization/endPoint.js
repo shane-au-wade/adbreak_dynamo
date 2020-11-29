@@ -12,6 +12,7 @@ let sendStopHttpRequest = async () => {
 let clearWatchdog = () => {
     let url = `http://localhost:3000/watchdog/clearTimer`
     fetch(url, {
+        method: 'post',
         mode: 'no-cors', // no-cors, *cors, same-origin
     });
 }
